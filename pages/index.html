@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//unpkg.com/layui@2.9.16/dist/css/layui.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <title>Learn</title>
+    <style>
+        .leftfix {
+            float: left;
+        }
+        .clearfix:after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+        body {
+            /* background-color: grey; */
+            width: 1280px;
+            height: 720px;
+        }
+        .container {
+            width: 1000px;
+            height: 50px;
+            /* background-color: blue; */
+            margin: 20px auto 0;
+            border-radius: 10px;
+            position: relative;
+        }
+        /* 课程表 */
+        .class-schedule {
+            background-color: #a233c63e;
+            color: white;
+            float: left;
+            margin: 0 37px;
+            border-radius: 10px;
+            height: 30px;
+            padding: 10px 0;
+        }
+        .class-schedule span {
+            float: left;
+            width: 50px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            font-size: 30px;
+            border-right: 2px solid #fff;
+        }
+        .class-schedule span:last-child {
+            border: 0 solid #fff;
+        }
+        /* 倒计时 */
+        .countDownTimer {
+            color: white;
+            font-size: 40px;
+            width: 180px;
+            height: 50px;
+            line-height: 50px;
+            background-color: #a233c63e;
+            border-radius: 10px;
+            text-align: center;
+        }
+        /* 上课倒计时 */
+        .countDownToClass {
+            color: white;
+            width: 180px;
+            height: 50px;
+            background-color: #a233c63e;
+            border-radius: 10px;
+            font-size: 40px;
+            text-align: center;
+            line-height: 50px;
+        }
+        .countDownDays {
+            font-size: 40px;
+            text-align: center;
+        }
+        .countDownTimer span {
+            vertical-align: baseline;
+            font-size: 20px;
+        }
+        .nextCourse {
+            animation: nextCourse 1s infinite alternate;
+        }
+        @keyframes nextCourse {
+            from {
+                color: white;
+            }
+            to {
+                color: #a233c63e;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container clearfix">
+        <div class="countDownTimer leftfix clearfix">
+            389<span>天</span>
+        </div>
+        <div class="class-schedule clearfix">
+            <span class="leftfix">生</span>
+            <span class="leftfix">地</span>
+            <span class="leftfix">语</span>
+            <span class="leftfix">体</span>
+            <span class="leftfix">物</span>
+            <span class="leftfix">数</span>
+            <span class="leftfix nextCourse">英</span>
+            <span class="leftfix">化</span>
+            <span class="leftfix">自</span>
+            <span class="leftfix">自</span>
+            <span class="leftfix">自</span>
+        </div>
+        <div class="countDownToClass leftfix">
+            05:32
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "smart_board_tools",
+  "version": "1.0.0",
+  "description": "智慧白板助手",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://e.coding.net/minecraftsever5148/smartboardtools/SmartBoardTools.git"
+  },
+  "author": "钱余磊",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^32.0.1"
+  }
+}
