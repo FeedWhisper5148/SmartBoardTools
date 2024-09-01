@@ -12,7 +12,8 @@
   },
   "author": "钱余磊",
   "license": "ISC",
-  "devDependencies": {
-    "electron": "^32.0.1"
+  "devDependencies": {},
+  "dependencies": {
+    "@electron/get": "file:get"
   }
 }
