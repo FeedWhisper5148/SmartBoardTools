@@ -1,0 +1,32 @@
+{
+  "name": "smart-board-tools",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "pack": "electron-builder --dir"
+  },
+  "build": {
+    "productName": "smart-board-tools",
+    "appId": "com.qianyulei.smart-board-tools",
+    "win": {
+      "target": "nsis",
+      "icon": "./icon.ico"
+    },
+    "directories": {
+      "output": "dist"
+    }
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.4.0",
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "author": "qianyulei",
+  "license": "ISC",
+  "description": "smart-board-tools",
+  "dependencies": {
+    "npm": "^10.8.3"
+  }
+}

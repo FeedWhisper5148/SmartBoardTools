@@ -1,0 +1,95 @@
+.leftfix {
+    float: left;
+}
+.clearfix:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+body {
+    /* background-color: grey; */
+    width: 1280px;
+    height: 720px;
+    overflow: hidden;
+}
+.container {
+    width: 1000px;
+    height: 50px;
+    /* background-color: blue; */
+    margin: 20px auto 0;
+    border-radius: 10px;
+    position: relative;
+}
+/* 课程表 */
+.class-schedule {
+    background-color: #a233c63e;
+    color: white;
+    float: left;
+    margin: 0 35px;
+    border-radius: 10px;
+    height: 30px;
+    padding: 10px 0;
+    position: relative;
+}
+.class-schedule span {
+    float: left;
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 30px;
+    border-right: 2px solid #fff;
+}
+.class-schedule span:last-child {
+    border: 0 solid #fff;
+}
+img {
+    width: 65px;
+    position: fixed;
+    left: 300px;
+    top: 0;
+}
+/* 倒数日 */
+.countDownTimer {
+    color: white;
+    font-size: 40px;
+    width: 180px;
+    height: 50px;
+    line-height: 50px;
+    background-color: #a233c63e;
+    border-radius: 10px;
+    text-align: center;
+}
+.countDownTimer .countDownDays {
+    font-size: 40px;
+}
+/* 上课倒计时 */
+.countDownToClass {
+    color: white;
+    width: 180px;
+    height: 50px;
+    background-color: #a233c63e;
+    border-radius: 10px;
+    font-size: 40px;
+    text-align: center;
+    line-height: 50px;
+}
+.countDownDays {
+    font-size: 40px;
+    text-align: center;
+}
+.countDownTimer span {
+    vertical-align: baseline;
+    font-size: 20px;
+}
+.nextCourse {
+    animation: nextCourse 1s infinite alternate;
+}
+@keyframes nextCourse {
+    from {
+        color: white;
+    }
+    to {
+        color: #a233c63e;
+    }
+}
