@@ -74,7 +74,7 @@ const classSchedule = [
         { start: "15:40", end: "16:20", course: "物" },
         { start: "16:30", end: "17:10", course: "物" },
         { start: "18:40", end: "19:50", course: "语" },
-        { start: "20:00", end: "21:10", course: "物" },
+        { start: "20:00", end: "20:25", course: "物" },
         { start: "21:20", end: "10:30", course: "数" }
     ]
 ]
@@ -101,12 +101,13 @@ function getScheduleForToday() {
 function getNextClassInfo() {
     const schedule = getScheduleForToday(); // 获取今天的课表
     // console.log(schedule)
-    // const now = new Date();
-    // const currentHour = now.getHours();
-    // const currentMinute = now.getMinutes();
-    // let currentTimeInSeconds = currentHour * 3600 + currentMinute * 60;
-    // let nextClassIndex = -1;
-    // let nextClassTimeInSeconds = Infinity;
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const currentSecond = now.getSeconds();
+    let currentTimeInSeconds = currentHour * 3600 + currentMinute * 60 + currentSecond;
+    let nextClassIndex = -1;
+    let nextClassTimeInSeconds = Infinity;
     for (let i = 0; i < schedule.length; i++) {
         // console.log(schedule[i])
         document.getElementById(`class${i}`).innerHTML = String(schedule[i].course);
@@ -120,11 +121,26 @@ function getNextClassInfo() {
         const startTimeInSeconds = startHour * 3600 + startMinute * 60;
         const endTimeInSeconds = endHour * 3600 + endMinute * 60;
 
+        // 判断当前是否为上课时间，如果是，就隐藏窗口
         if (currentTimeInSeconds >= startTimeInSeconds && currentTimeInSeconds < endTimeInSeconds) {
+            document.getElementById('container').style.visibility = 'hidden'
             return { isClassTime: true, courseIndex: i };
+        // 如果不是，就给下一节课添加动画
         } else if (currentTimeInSeconds < startTimeInSeconds && startTimeInSeconds < nextClassTimeInSeconds) {
             nextClassIndex = i;
+            console.log(`class${i}`)
+            document.getElementById(`class${i}`).setAttribute('class', 'nextCourse')
+            document.getElementById('container').style.visibility = 'visible'
+            document.getElementById(`class${i - 1}`).removeAttribute('class', 'nextCourse')
             nextClassTimeInSeconds = startTimeInSeconds;
+            // 计算到下一节的时间
+            let countDownToNextCourse =startTimeInSeconds - currentTimeInSeconds
+            let countDownToNextCourseInMinutes = Math.floor(countDownToNextCourse / 60)
+            let countDownToNextCourseInSeconds = countDownToNextCourse % 60
+            // console.log(countDownToNextCourseInMinutes)
+            // console.log(countDownToNextCourseInSeconds)
+            // console.log(countDownToNextCourse)
+            document.getElementById('countDownToClass').innerHTML = String(countDownToNextCourseInMinutes) + ':' + String(countDownToNextCourseInSeconds)
         }
     }
 
