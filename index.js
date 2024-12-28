@@ -1,6 +1,10 @@
-const {app, BrowserWindow, screen} = require('electron')
-// const path = require('path')
+const {app, BrowserWindow, screen, ipcMain} = require('electron')
+const path = require('path')
 // const {Menu, Tray} = require('electron')
+
+function updateCountDownDays(event,data) {
+    console.log(data)
+}
 
 app.on('ready', () => {
     //当app准备好后，执行createWindow创建窗口
@@ -14,6 +18,9 @@ app.on('ready', () => {
         frame: false,//无边框窗口
         transparent: true,//透明
         skipTaskbar: true,//不显示在任务栏
+        webPreferences: {
+            nodeIntegration:true
+        }
     })
 
       // 获取屏幕的尺寸
@@ -33,9 +40,14 @@ app.on('ready', () => {
     const index = new BrowserWindow({
         width: 560,//窗口宽度
         height: 400,//窗口高度
-        autoHideMenuBar: true,//自动隐藏菜单档
+        autoHideMenuBar: false,//自动隐藏菜单档
+        webPreferences: {
+            nodeIntegration:true,
+            preload: path.resolve(__dirname, './preload.js')
+        }
     })
 
+    ipcMain.on('countDownDayInput', updateCountDownDays)
     index.loadFile('./pages/index.html')
     index.center()
 })
