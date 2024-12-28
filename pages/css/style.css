@@ -22,7 +22,7 @@ body {
 }
 /* 课程表 */
 .class-schedule {
-    background-color: #a233c63e;
+    background-color: #5FB8788E;
     color: white;
     float: left;
     margin: 0 35px;
@@ -56,7 +56,7 @@ img {
     width: 180px;
     height: 50px;
     line-height: 50px;
-    background-color: #a233c63e;
+    background-color: #5FB8788E;
     border-radius: 10px;
     text-align: center;
 }
@@ -68,7 +68,7 @@ img {
     color: white;
     width: 180px;
     height: 50px;
-    background-color: #a233c63e;
+    background-color: #5FB8788E;
     border-radius: 10px;
     font-size: 40px;
     text-align: center;
@@ -90,6 +90,6 @@ img {
         color: white;
     }
     to {
-        color: #a233c63e;
+        color: #009688;
     }
 }

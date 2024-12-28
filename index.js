@@ -31,11 +31,12 @@ app.on('ready', () => {
     //加载一个页面
     win.loadFile('./pages/ClassSchedule.html')
     const index = new BrowserWindow({
-        width: 600,//窗口宽度
+        width: 560,//窗口宽度
         height: 400,//窗口高度
         autoHideMenuBar: true,//自动隐藏菜单档
     })
 
+    index.loadFile('./pages/index.html')
     index.center()
 })
 

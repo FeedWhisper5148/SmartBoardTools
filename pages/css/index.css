@@ -1,0 +1,56 @@
+.leftfix {
+    float: left;
+}
+
+.clearfix:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+/* 重置样式 */
+a {
+    text-decoration: none;
+    color: white;
+}
+
+body {
+    width: 600px;
+    height: 400px;
+    overflow: hidden;
+}
+
+/* 导航栏 */
+.nav {
+    height: 40px;
+    background-color: #5FB878;
+    text-align: center;
+    line-height: 40px;
+}
+
+.settings {
+    width: 299px;
+    height: 40px;
+    /* background-color: skyblue; */
+    border-right: solid 2px white;
+}
+
+.info {
+    width: 299px;
+    height: 40px;
+    /* background-color: peru; */
+}
+
+/* 设置页面 */
+.countDownSetting {
+    height: 40px;
+    line-height: 40px;
+    margin-left: 10px;
+}
+
+.input {
+    height: 20px;
+    line-height: 20px;
+    vertical-align: middle;
+    width: 80px;
+}
