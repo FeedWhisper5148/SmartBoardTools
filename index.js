@@ -1,9 +1,24 @@
 const {app, BrowserWindow, screen, ipcMain} = require('electron')
 const path = require('path')
+const fs = require('fs')
+const { stringify } = require('querystring')
 // const {Menu, Tray} = require('electron')
 
+// const writeCountDownDays = fs.creat('./config.json')
 function updateCountDownDays(event,data) {
-    console.log(data)
+    let year = data.substring(0, 4)
+    let month = data.substring(4, 6)
+    let day = data.substring(6, 8)
+    formatData = year + '-' + month + '-' + day + 'T00:00:00'
+    const filePath = path.resolve(__dirname, './config.json')
+    const rawData = fs.readFileSync(filePath)
+    const jsonData = JSON.parse(rawData)
+    jsonData.countDownDays = formatData
+    const modifiedData = JSON.stringify(jsonData)
+    fs.writeFileSync(filePath, modifiedData)
+    // let config = {countDownDay: formatData}
+    // fs.appendFileSync('/config.json', JSON.stringify(config))
+    console.log(formatData)
 }
 
 app.on('ready', () => {
@@ -11,15 +26,16 @@ app.on('ready', () => {
     const win = new BrowserWindow({
         width: 1239,//窗口宽度
         height: 100,//窗口高度
-        autoHideMenuBar: true,//自动隐藏菜单档
+        autoHideMenuBar: false,//自动隐藏菜单档
         alwaysOnTop: true,//置顶
         x: 100,//窗口位置x坐标
         y: 0,//窗口位置y坐标
         frame: false,//无边框窗口
-        transparent: true,//透明
-        skipTaskbar: true,//不显示在任务栏
+        transparent: false,//透明
+        skipTaskbar: false,//不显示在任务栏
         webPreferences: {
-            nodeIntegration:true
+            nodeIntegration:true,
+            preload: path.resolve(__dirname, './preload.js')
         }
     })
 
