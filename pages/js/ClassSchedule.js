@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     document.getElementById('container').style.visibility = 'visible'
                     document.getElementById(`class${i - 1}`).removeAttribute('class', 'nextCourse')
                     nextClassTimeInSeconds = startTimeInSeconds;
+                    
                     // 计算到下一节的时间
                     let countDownToNextCourse = startTimeInSeconds - currentTimeInSeconds
                     let countDownToNextCourseInMinutes = Math.floor(countDownToNextCourse / 60)
@@ -67,7 +68,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     // console.log(countDownToNextCourseInMinutes)
                     // console.log(countDownToNextCourseInSeconds)
                     // console.log(countDownToNextCourse)
-                    document.getElementById('countDownToClass').innerHTML = String(countDownToNextCourseInMinutes) + ':' + String(countDownToNextCourseInSeconds)
+                    if (countDownToNextCourseInSeconds < 10) {
+                        document.getElementById('countDownToClass').innerHTML = String(countDownToNextCourseInMinutes) + ':0' + String(countDownToNextCourseInSeconds)
+                    } else {
+                        document.getElementById('countDownToClass').innerHTML = String(countDownToNextCourseInMinutes) + ':' + String(countDownToNextCourseInSeconds)
+                    }
                 }
             }
 

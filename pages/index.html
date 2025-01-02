@@ -2,7 +2,6 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartBoardTools</title>
     <link rel="stylesheet" href="layui/css/layui.css">
     <link rel="stylesheet" href="css/index.css">
@@ -14,7 +13,7 @@
                 <a href="#">设置</a>
             </span>
             <span class="info leftfix">
-                <a href="#">软件信息</a>
+                <a href="./AppInfo.html">软件信息</a>
             </span>
         </div>
         <div class="main clearfix">
@@ -32,6 +31,9 @@
                 <!-- <button id="countDownDayButton">确定</button> -->
             </span>
         </div>
+        <button class=layui-btn id="editClassScheduleButton">修改课程表</button>
+        <button class=layui-btn id="quit">退出</button>
+        <div class="tip">默认上课状态下不会显示课程表，没显示即为上课时间，可在右下角托盘打开主界面</div>
     </div>
 </body>
 <script src="layui/layui.all.js" charset="utf-8"></script>

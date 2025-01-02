@@ -1,0 +1,32 @@
+body {
+    width: 568px;
+    height: 700px;
+    overflow: hidden;
+}
+
+.title {
+    width: 568px;
+    font-size: 20px;
+    text-align: center;
+    background-color: #5FB878;
+}
+
+.classSchedule {
+    margin: 10px;
+    padding: 0;
+}
+
+.layui-input {
+    width: 70px;
+    margin: 10px;
+}
+
+.layui-btn {
+    margin-left: 120px;
+}
+
+.content {
+    text-align: center;
+    width: 560px;
+    margin-top: 10px;
+}

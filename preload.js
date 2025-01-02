@@ -1,4 +1,4 @@
-const {contextBridge, ipcRenderer} = require('electron')
+const { contextBridge, ipcRenderer } = require('electron')
 const fs = require('fs')
 const { console } = require('inspector')
 // let receivedData
@@ -16,7 +16,7 @@ const { console } = require('inspector')
 contextBridge.exposeInMainWorld('electronAPI', {
     async fetchData() {
         try {
-            const data = await ipcRenderer.invoke('fetch-data-request');
+            const data = await ipcRenderer.invoke('fetchDataRequest');
             return data; // 将数据返回给调用者
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -24,7 +24,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
         }
     },
     updateCountDownDays: (date) => {
-        ipcRenderer.send('countDownDayInput', date);
+        ipcRenderer.invoke('countDownDayInput', date).then((response) => {
+            console.log('Response from main process:', response);
+        })
     },
     async getCountDays() {
         try {
@@ -34,5 +36,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
             console.error('Error fetching data:', error);
             throw error; // 将错误抛出给调用者
         }
+    },
+    quitApp: () => {
+        ipcRenderer.send('quitApp')
+    },
+    showEditWindow: () => {
+        ipcRenderer.send('showEditWindow')
     }
+    // alert(date)
 });
