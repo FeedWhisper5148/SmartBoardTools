@@ -106,10 +106,11 @@ app.on('ready', () => {
 
     // 创建主窗口
     const index = new BrowserWindow({
-        width: 560,//窗口宽度
+        width: 600,//窗口宽度
         height: 400,//窗口高度
         autoHideMenuBar: true,//自动隐藏菜单档
         webPreferences: {
+            webSecurity: false,
             sandbox: false,
             nodeIntegration: true,
             preload: path.resolve(__dirname, './preload.js')
@@ -126,21 +127,6 @@ app.on('ready', () => {
 
     index.loadFile('./pages/index.html')
     index.center()
-
-    const editClassSchedule = new BrowserWindow({
-        width: 580,
-        height: 700,
-        autoHideMenuBar: true,
-        webPreferences: {
-            nodeIntegration: true,
-            sandbox: false,
-            preload: path.resolve(__dirname, './preload.js')
-        },
-        show: false
-    })
-
-    editClassSchedule.loadFile('./pages/editClassSchedule.html')
-    editClassSchedule.center()
 
     ipcMain.handle('countDownDayInput', updateCountDownDays)
 
@@ -160,18 +146,19 @@ app.on('ready', () => {
 
     ipcMain.on('showEditWindow', () => {
         const editClassSchedule = new BrowserWindow({
-            width: 580,
-            height: 700,
-            autoHideMenuBar: true,
+            width: 580,//窗口宽度
+            height: 700,//窗口高度
+            autoHideMenuBar: true,//自动隐藏菜单档
             webPreferences: {
-                nodeIntegration: true,
+                webSecurity: false,
                 sandbox: false,
+                nodeIntegration: true,
                 preload: path.resolve(__dirname, './preload.js')
             },
-            // show: false
+            // show:false
         })
-    
-        editClassSchedule.loadFile('./pages/editClassSchedule.html')
+
+        editClassSchedule.loadFile('./pages/EditClassSchedule.html')
         editClassSchedule.center()
     })
 

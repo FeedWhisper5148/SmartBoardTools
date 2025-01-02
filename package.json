@@ -8,14 +8,25 @@
     "pack": "electron-builder --dir"
   },
   "build": {
-    "productName": "smart-board-tools",
     "appId": "com.qianyulei.smart-board-tools",
+    "files": [
+      "**/*"
+    ],
     "win": {
-      "target": "nsis",
-      "icon": "./icon.ico"
+      "icon": "./icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
     },
-    "directories": {
-      "output": "dist"
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true
     }
   },
   "devDependencies": {
