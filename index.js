@@ -23,12 +23,6 @@ writeDefalutData()
 const rawData = fs.readFileSync(filePath)
 const jsonData = JSON.parse(rawData)
 
-// 重新读取文件
-function readDataAgain() {
-    const rawData = fs.readFileSync(filePath)
-    const jsonData = JSON.parse(rawData)
-}
-
 // 文件内容发送改动时，重新读取
 fs.watchFile(filePath, { persistent: true, interval: 1000 }, (curr, prev) => {
     if (curr.mtimeMs !== prev.mtimeMs) { // 文件被修改
@@ -37,22 +31,21 @@ fs.watchFile(filePath, { persistent: true, interval: 1000 }, (curr, prev) => {
     }
 });
 
-
+// 点击托盘上的选项是重新创建主窗口
 function showWindow() {
     const index = new BrowserWindow({
-        width: 560,//窗口宽度
-        height: 400,//窗口高度
-        autoHideMenuBar: true,//自动隐藏菜单档
+        width: 600,
+        height: 400,
+        autoHideMenuBar: true,
         webPreferences: {
             sandbox: false,
             nodeIntegration: true,
             preload: path.resolve(__dirname, './preload.js')
-        },        // 可以选择在这里重新创建窗口，或者做其他处理
+        },
     })
     index.loadFile('./pages/index.html')
     index.center()
 }
-
 
 // 修改倒数日
 function updateCountDownDays(event, data) {
@@ -78,12 +71,12 @@ app.on('ready', () => {
         width: 1239,
         height: 100,
         autoHideMenuBar: true,
-        alwaysOnTop: true,//置顶
+        alwaysOnTop: true,
         x: 100,
         y: 0,
-        frame: false,//无边框窗口
-        transparent: true,//透明
-        skipTaskbar: true,//不显示在任务栏
+        frame: false,
+        transparent: true,
+        skipTaskbar: true,
         webPreferences: {
             nodeIntegration: true,
             sandbox: false,
@@ -106,9 +99,9 @@ app.on('ready', () => {
 
     // 创建主窗口
     const index = new BrowserWindow({
-        width: 600,//窗口宽度
-        height: 400,//窗口高度
-        autoHideMenuBar: true,//自动隐藏菜单档
+        width: 600,
+        height: 400,
+        autoHideMenuBar: true,
         webPreferences: {
             webSecurity: false,
             sandbox: false,
@@ -146,9 +139,9 @@ app.on('ready', () => {
 
     ipcMain.on('showEditWindow', () => {
         const editClassSchedule = new BrowserWindow({
-            width: 580,//窗口宽度
-            height: 700,//窗口高度
-            autoHideMenuBar: true,//自动隐藏菜单档
+            width: 580,
+            height: 700,
+            autoHideMenuBar: true,
             webPreferences: {
                 webSecurity: false,
                 sandbox: false,

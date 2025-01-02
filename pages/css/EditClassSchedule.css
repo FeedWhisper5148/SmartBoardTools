@@ -9,6 +9,8 @@ body {
     font-size: 20px;
     text-align: center;
     background-color: #5FB878;
+    height: 40px;
+    line-height: 40px;
 }
 
 .classSchedule {
@@ -29,4 +31,9 @@ body {
     text-align: center;
     width: 560px;
     margin-top: 10px;
+}
+
+.tip {
+    margin: 20px;
+    text-align: center;
 }
