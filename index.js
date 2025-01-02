@@ -58,7 +58,7 @@ function updateCountDownDays(event, data) {
     jsonData.countDownDays = formatData
     const modifiedData = JSON.stringify(jsonData)
     fs.writeFileSync(filePath, modifiedData)
-    console.log(formatData)
+    // console.log(formatData)
     ipcMain.handle('getCountDownDays', async (event) => {
         const data = formatData;
         return data; // 将数据返回给渲染进程
@@ -126,7 +126,7 @@ app.on('ready', () => {
     let jsonData = fs.readFileSync(filePath)
     let strData = jsonData.toString()
     let objData = JSON.parse(strData)
-    console.log(objData)
+    // console.log(objData)
     ipcMain.handle('fetchDataRequest', async (event) => {
         const data = objData;
         return data; // 将数据返回给渲染进程
@@ -151,8 +151,15 @@ app.on('ready', () => {
             // show:false
         })
 
-        editClassSchedule.loadFile('./pages/EditClassSchedule.html')
-        editClassSchedule.center()
+    // 编辑课程表
+    ipcMain.on('editClassSchedule', (event, data) => {
+        let jsonData = JSON.stringify(data)
+        fs.writeFileSync(filePath, jsonData)
+        // console.log(jsonData)
+    })
+
+    editClassSchedule.loadFile('./pages/EditClassSchedule.html')
+    editClassSchedule.center()
     })
 
     // 报错处理
@@ -171,7 +178,7 @@ app.on('ready', () => {
         console.error('Renderer process crashed', killed)
     })
 
-    const trayIconPath = path.join(__dirname, 'icon.ico');
+    const trayIconPath = path.join(__dirname, 'favicon.ico');
     const tray = new Tray(trayIconPath);
     tray.setToolTip('智慧白板助手')
     const contextMenu = Menu.buildFromTemplate([

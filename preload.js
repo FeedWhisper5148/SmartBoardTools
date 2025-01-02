@@ -42,6 +42,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
     showEditWindow: () => {
         ipcRenderer.send('showEditWindow')
+    },
+    editClassSchedule: (data) => {
+        ipcRenderer.send('editClassSchedule', data)
     }
     // alert(date)
 });

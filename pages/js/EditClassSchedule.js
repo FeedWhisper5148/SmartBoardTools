@@ -39,8 +39,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 alert('节数应输入阿拉伯数字1～11')
             }
 
-            classSchedule[formatedWeek][formatedIndex].course = courseInput.value
-            console.log(classSchedule)
+            if (courseInput.value.length == 1) {
+                data.classSchedule[formatedWeek][formatedIndex].course = courseInput.value
+                console.log(data)
+                electronAPI.editClassSchedule(data)
+                alert('修改成功，重启APP后生效')
+            } else {
+                alert('课程名称应输入一个汉字')
+            }
         })
 
     } catch (error) {

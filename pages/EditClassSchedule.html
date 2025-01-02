@@ -10,9 +10,8 @@
 
 <script>
   function handleFormSubmit(event) {
-    event.preventDefault(); // 阻止表单的默认提交行为
-    console.log('表单被提交，但页面没有跳转！');
-    // 你可以在这里添加AJAX调用或其他处理逻辑
+    event.preventDefault()
+    // console.log('表单被提交，但页面没有跳转！');
   }
 </script>
 
@@ -46,6 +45,7 @@
       <button class=layui-btn id="confirm" onclick="handleFormSubmit(event)">确定</button>
     </div>
   </form>
+    <div class="tip">注：重启后生效</div>
 </body>
 <script src="./js/EditClassSchedule.js"></script>
 
