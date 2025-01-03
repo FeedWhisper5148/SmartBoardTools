@@ -45,6 +45,19 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
     editClassSchedule: (data) => {
         ipcRenderer.send('editClassSchedule', data)
-    }
+    },
     // alert(date)
+    getWordIndex: () => {
+        ipcRenderer.on('wordIndex', (event, data) => {
+            return data
+        })
+    },
+    getWordList: () => {
+        ipcRenderer.on('wordList', (event, data) => {
+            return data
+        })
+    },
+    updateWordIndex: (index) => {
+        ipcRenderer.send('updateWordIndex', index)
+    }
 });
