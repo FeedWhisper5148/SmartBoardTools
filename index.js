@@ -9,24 +9,34 @@ const userFile = app.getPath('userData')
 const filePath = path.join(userFile, 'SmartBoardTools.json')
 const wordListPath = path.join(userFile, 'wordList.json')
 
+let objData = {}
+
+// 每日一词
+const wordList = fs.readFileSync(wordListPath)
+const wordListObj = JSON.parse(wordList)
+
 // 判断数据文件是否存在，若不存在则创建默认的数据文件
 function writeDefalutData() {
     if (!fs.existsSync(filePath)) {
-        fs.writeFileSync(filePath, '{"wordListIndex":1,"countDownDays":"2025-03-24T00:00:00","classSchedule":[[{"start":"8:00","end":"8:40","course":"生"},{"start":"8:50","end":"9:30","course":"地"},{"start":"10:00","end":"10:40","course":"语"},{"start":"10:50","end":"11:30","course":"体"},{"start":"14:00","end":"14:40","course":"物"},{"start":"14:50","end":"15:30","course":"数"},{"start":"15:40","end":"16:20","course":"英"},{"start":"16:30","end":"17:10","course":"化"},{"start":"18:40","end":"19:50","course":"英"},{"start":"20:00","end":"21:10","course":"语"},{"start":"21:20","end":"10:30","course":"自"}],[{"start":"8:00","end":"8:40","course":"物"},{"start":"8:50","end":"9:30","course":"英"},{"start":"10:00","end":"10:40","course":"数"},{"start":"10:50","end":"11:30","course":"数"},{"start":"14:00","end":"14:40","course":"物"},{"start":"14:50","end":"15:30","course":"化"},{"start":"15:40","end":"16:20","course":"生"},{"start":"16:30","end":"17:10","course":"物"},{"start":"18:40","end":"19:50","course":"物"},{"start":"20:00","end":"21:10","course":"物"},{"start":"21:20","end":"10:30","course":"物"}],[{"start":"8:00","end":"8:40","course":"语"},{"start":"8:50","end":"9:30","course":"化"},{"start":"10:00","end":"10:40","course":"数"},{"start":"10:50","end":"11:30","course":"信"},{"start":"14:00","end":"14:40","course":"英"},{"start":"14:50","end":"15:30","course":"英"},{"start":"15:40","end":"16:20","course":"生"},{"start":"16:30","end":"17:10","course":"物"},{"start":"18:40","end":"19:50","course":"自"},{"start":"20:00","end":"21:10","course":"自"},{"start":"21:20","end":"10:30","course":"自"}],[{"start":"8:00","end":"8:40","course":"数"},{"start":"8:50","end":"9:30","course":"化"},{"start":"10:00","end":"10:40","course":"物"},{"start":"10:50","end":"11:30","course":"英"},{"start":"14:00","end":"14:40","course":"英"},{"start":"14:50","end":"15:30","course":"英"},{"start":"15:40","end":"16:20","course":"英"},{"start":"16:30","end":"17:10","course":"物"},{"start":"18:40","end":"19:50","course":"物"},{"start":"20:00","end":"21:10","course":"物"},{"start":"21:20","end":"10:30","course":"物"}],[{"start":"8:00","end":"8:40","course":"英"},{"start":"8:50","end":"9:30","course":"英"},{"start":"10:00","end":"10:40","course":"英"},{"start":"10:50","end":"11:30","course":"英"},{"start":"14:00","end":"14:40","course":"英"},{"start":"14:50","end":"15:30","course":"英"},{"start":"15:40","end":"16:20","course":"英"},{"start":"16:30","end":"17:10","course":"英"},{"start":"18:40","end":"19:50","course":"生"},{"start":"20:00","end":"21:10","course":"物"},{"start":"21:20","end":"10:30","course":"物"}],[{"start":"8:00","end":"8:40","course":"英"},{"start":"8:50","end":"9:30","course":"化"},{"start":"10:00","end":"10:40","course":"英"},{"start":"10:50","end":"11:30","course":"数"},{"start":"14:00","end":"14:40","course":"物"},{"start":"14:50","end":"15:30","course":"语"},{"start":"15:40","end":"16:20","course":"物"},{"start":"16:30","end":"17:10","course":"物"},{"start":"18:40","end":"19:50","course":"语"},{"start":"20:00","end":"20:25","course":"物"},{"start":"21:20","end":"10:30","course":"数"}],[{"start":"8:00","end":"8:40","course":"英"},{"start":"8:50","end":"9:30","course":"化"},{"start":"10:00","end":"10:40","course":"英"},{"start":"10:50","end":"11:30","course":"数"},{"start":"14:00","end":"14:40","course":"物"},{"start":"14:50","end":"15:30","course":"语"},{"start":"15:40","end":"16:20","course":"物"},{"start":"16:30","end":"17:10","course":"物"},{"start":"18:40","end":"19:50","course":"语"},{"start":"20:00","end":"20:25","course":"物"},{"start":"21:20","end":"10:30","course":"数"}]]}', 'utf8'); // 创建空文件
-        console.log(`File ${filePath} created.`);
+        fs.writeFileSync(filePath, '{"wordListIndex":0,"wordLastUpdate":"","countDownDays":"2025-03-24T00:00:00","classSchedule":[[{"start":"8:00","end":"8:40","course":"生"},{"start":"8:50","end":"9:30","course":"地"},{"start":"10:00","end":"10:40","course":"语"},{"start":"10:50","end":"11:30","course":"体"},{"start":"14:00","end":"14:40","course":"物"},{"start":"14:50","end":"15:30","course":"数"},{"start":"15:40","end":"16:20","course":"英"},{"start":"16:30","end":"17:10","course":"化"},{"start":"18:40","end":"19:50","course":"英"},{"start":"20:00","end":"21:10","course":"语"},{"start":"21:20","end":"10:30","course":"自"}],[{"start":"8:00","end":"8:40","course":"物"},{"start":"8:50","end":"9:30","course":"英"},{"start":"10:00","end":"10:40","course":"数"},{"start":"10:50","end":"11:30","course":"数"},{"start":"14:00","end":"14:40","course":"物"},{"start":"14:50","end":"15:30","course":"化"},{"start":"15:40","end":"16:20","course":"生"},{"start":"16:30","end":"17:10","course":"物"},{"start":"18:40","end":"19:50","course":"物"},{"start":"20:00","end":"21:10","course":"物"},{"start":"21:20","end":"10:30","course":"物"}],[{"start":"8:00","end":"8:40","course":"语"},{"start":"8:50","end":"9:30","course":"化"},{"start":"10:00","end":"10:40","course":"数"},{"start":"10:50","end":"11:30","course":"信"},{"start":"14:00","end":"14:40","course":"英"},{"start":"14:50","end":"15:30","course":"英"},{"start":"15:40","end":"16:20","course":"生"},{"start":"16:30","end":"17:10","course":"物"},{"start":"18:40","end":"19:50","course":"自"},{"start":"20:00","end":"21:10","course":"自"},{"start":"21:20","end":"10:30","course":"自"}],[{"start":"8:00","end":"8:40","course":"数"},{"start":"8:50","end":"9:30","course":"化"},{"start":"10:00","end":"10:40","course":"物"},{"start":"10:50","end":"11:30","course":"英"},{"start":"14:00","end":"14:40","course":"英"},{"start":"14:50","end":"15:30","course":"英"},{"start":"15:40","end":"16:20","course":"英"},{"start":"16:30","end":"17:10","course":"物"},{"start":"18:40","end":"19:50","course":"物"},{"start":"20:00","end":"21:10","course":"物"},{"start":"21:20","end":"10:30","course":"物"}],[{"start":"8:00","end":"8:40","course":"英"},{"start":"8:50","end":"9:30","course":"英"},{"start":"10:00","end":"10:40","course":"英"},{"start":"10:50","end":"11:30","course":"英"},{"start":"14:00","end":"14:40","course":"英"},{"start":"14:50","end":"15:30","course":"英"},{"start":"15:40","end":"16:20","course":"英"},{"start":"16:30","end":"17:10","course":"英"},{"start":"18:40","end":"19:50","course":"生"},{"start":"20:00","end":"21:10","course":"物"},{"start":"21:20","end":"10:30","course":"物"}],[{"start":"8:00","end":"8:40","course":"英"},{"start":"8:50","end":"9:30","course":"化"},{"start":"10:00","end":"10:40","course":"英"},{"start":"10:50","end":"11:30","course":"数"},{"start":"14:00","end":"14:40","course":"物"},{"start":"14:50","end":"15:30","course":"语"},{"start":"15:40","end":"16:20","course":"物"},{"start":"16:30","end":"17:10","course":"物"},{"start":"18:40","end":"19:50","course":"语"},{"start":"20:00","end":"20:25","course":"物"},{"start":"21:20","end":"10:30","course":"数"}],[{"start":"8:00","end":"8:40","course":"英"},{"start":"8:50","end":"9:30","course":"化"},{"start":"10:00","end":"10:40","course":"英"},{"start":"10:50","end":"11:30","course":"数"},{"start":"14:00","end":"14:40","course":"物"},{"start":"14:50","end":"15:30","course":"语"},{"start":"15:40","end":"16:20","course":"物"},{"start":"16:30","end":"17:10","course":"物"},{"start":"18:40","end":"19:50","course":"语"},{"start":"20:00","end":"20:25","course":"物"},{"start":"21:20","end":"10:30","course":"数"}]]}', 'utf8')
+        // 读取数据文件
+        rawData = fs.readFileSync(filePath)
+        objData = JSON.parse(rawData)
+        objData.wordLastUpdate = new Date().toISOString().substring(0, 10)
+        jsonData = JSON.stringify(objData)
+        fs.writeFileSync(filePath, jsonData)
+        console.log(`File ${filePath} created.`)
+        // console.log(objData)
     } else {
         console.log(`File ${filePath} already exists.`);
     }
-    if (!fs.existsSync(wordListPath)){
-        const wordList = fs.readFileSync('./resource/wordList.json')
+    if (!fs.existsSync(wordListPath)) {
+        const wordList = fs.readFileSync('./pages/resource/wordList.json')
         fs.writeFileSync(wordListPath, wordList)
     }
 }
-writeDefalutData()
 
-// 软件打开时读取文件
-const rawData = fs.readFileSync(filePath)
-const objData = JSON.parse(rawData)
+writeDefalutData()
 
 // 文件内容发送改动时，重新读取
 fs.watchFile(filePath, { persistent: true, interval: 1000 }, (curr, prev) => {
@@ -70,10 +80,31 @@ function updateCountDownDays(event, data) {
     });
 }
 
-// 每日一词
-const wordList = fs.readFileSync('./resource/wordList.json')
-const wordListObj = JSON.parse(wordList)
+let currentWord = ''
 
+// 判断是否需要更新单词
+function getNewWord() {
+    const rawData = fs.readFileSync(filePath).toString()
+    // console.log(rawData)
+    const objData = JSON.parse(rawData)
+    if (new Date().toISOString().substring(0, 10) != objData.wordLastUpdate) {
+        console.log(new Date().toISOString().substring(0, 10))
+        console.log(objData.wordLastUpdate)
+        // console.log(jsonData)
+        objData.wordListIndex = parseInt(objData.wordListIndex) + 1
+        objData.wordLastUpdate = new Date().toISOString().substring(0, 10)
+        jsonData = JSON.stringify(objData)
+        fs.writeFileSync(filePath, jsonData)
+        currentWord = wordListObj.list[objData.wordListIndex]
+        console.log('new word: ' + currentWord)
+    } else {
+        currentWord = wordListObj.list[objData.wordListIndex]
+        console.log(currentWord)
+        return currentWord
+    }
+}
+
+setInterval(getNewWord, 1000);
 
 app.on('ready', () => {
     // 创建课程表窗口
@@ -133,9 +164,6 @@ app.on('ready', () => {
 
     ipcMain.handle('countDownDayInput', updateCountDownDays)
 
-    let jsonData = fs.readFileSync(filePath)
-    let strData = jsonData.toString()
-    let objData = JSON.parse(strData)
     // console.log(objData)
     ipcMain.handle('fetchDataRequest', async (event) => {
         const data = objData;
@@ -161,15 +189,17 @@ app.on('ready', () => {
             // show:false
         })
 
-    // 编辑课程表
-    ipcMain.on('editClassSchedule', (event, data) => {
-        let jsonData = JSON.stringify(data)
-        fs.writeFileSync(filePath, jsonData)
-        // console.log(jsonData)
-    })
+        // 编辑课程表
+        ipcMain.on('editClassSchedule', (event, data) => {
+            let jsonData = JSON.stringify(data)
+            fs.writeFileSync(filePath, jsonData)
+            // console.log(jsonData)
+        })
 
-    editClassSchedule.loadFile('./pages/EditClassSchedule.html')
-    editClassSchedule.center()
+        editClassSchedule.loadFile('./pages/EditClassSchedule.html')
+        editClassSchedule.center()
+
+    })
 
     const memoriseWords = new BrowserWindow({
         width: 150,
@@ -189,14 +219,12 @@ app.on('ready', () => {
     })
 
     memoriseWords.loadFile('./pages/memoriseWords.html')
-    const wordList = fs.readFile(wordListPath)
     memoriseWords.webContents.send('wordIndex', objData)
-    memoriseWords.webContents.send('wordList', wordList)
+    memoriseWords.webContents.send('wordList', wordListObj)
     ipcMain.on('updateWordIndex', (event, index) => {
         objData.wordIndex = index
         console.log(objData)
         fs.writeFileSync(filePath, JSON.stringify(objData))
-    })
     })
 
     // 报错处理
