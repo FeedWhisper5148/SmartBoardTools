@@ -55,5 +55,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
             console.error('Error fetching data:', error);
             throw error; // 将错误抛出给调用者
         }
+    },
+    async getWordMeaning() {
+        try {
+            const data = await ipcRenderer.invoke('meaning');
+            return data; // 将数据返回给调用者
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error; // 将错误抛出给调用者
+        }
     }
 })
