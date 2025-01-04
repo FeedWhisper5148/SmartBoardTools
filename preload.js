@@ -47,17 +47,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
         ipcRenderer.send('editClassSchedule', data)
     },
     // alert(date)
-    getWordIndex: () => {
-        ipcRenderer.on('wordIndex', (event, data) => {
-            return data
-        })
-    },
-    getWordList: () => {
-        ipcRenderer.on('wordList', (event, data) => {
-            return data
-        })
-    },
-    updateWordIndex: (index) => {
-        ipcRenderer.send('updateWordIndex', index)
+    async getWord() {
+        try {
+            const data = await ipcRenderer.invoke('word');
+            return data; // 将数据返回给调用者
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error; // 将错误抛出给调用者
+        }
     }
-});
+})

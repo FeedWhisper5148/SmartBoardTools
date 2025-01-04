@@ -92,11 +92,11 @@ function getNewWord() {
         console.log(objData.wordLastUpdate)
         // console.log(jsonData)
         objData.wordListIndex = parseInt(objData.wordListIndex) + 1
-        objData.wordLastUpdate = new Date().toISOString().substring(0, 10)
         jsonData = JSON.stringify(objData)
         fs.writeFileSync(filePath, jsonData)
         currentWord = wordListObj.list[objData.wordListIndex]
         console.log('new word: ' + currentWord)
+        return currentWord
     } else {
         currentWord = wordListObj.list[objData.wordListIndex]
         console.log(currentWord)
@@ -104,7 +104,89 @@ function getNewWord() {
     }
 }
 
-setInterval(getNewWord, 1000);
+const querystring = require('querystring')
+const crypto = require('crypto')
+
+function translate() {
+    // 有道翻译API的配置信息
+    const appId = '6464afbe2b0c30a2'
+    const appSecret = '0oXCQkHJwYrLXjSbp9lopvAiLxeSpvYc'
+
+    // 要翻译的文本和语言信息
+    const textToTranslate = getNewWord()
+    const fromLang = 'auto'
+    const toLang = 'zh-CN'
+
+    const salt = Math.random().toString(36).substr(2, 16);
+
+    // 获取当前UTC时间戳
+    const curtime = Math.floor(Date.now() / 1000);
+
+    // 构造签名前的字符串
+    const signStr = `${appId}${textToTranslate}${salt}${curtime}${appSecret}`;
+
+    // 计算签名
+    const sign = crypto.createHash('sha256').update(signStr).digest('hex');
+
+    // 构造请求参数
+    const params = {
+        q: textToTranslate,
+        from: fromLang,
+        to: toLang,
+        appKey: appId,
+        salt: salt,
+        sign: sign,
+        signType: 'v3',
+        curtime: curtime,
+    };
+
+    // 将参数转换为查询字符串
+    const queryString = querystring.stringify(params);
+
+    // 有道翻译API的请求URL
+    const apiUrl = `https://openapi.youdao.com/api?${queryString}`;
+
+    const rawData = fs.readFileSync(filePath).toString()
+    // console.log(rawData)
+    const objData = JSON.parse(rawData)
+
+    // 判断是否需要更新翻译
+    if (new Date().toISOString().substring(0, 10) != objData.wordLastUpdate) {
+        // 发送HTTPS GET请求
+        https.get(apiUrl, (res) => {
+            let data = '';
+
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+
+            res.on('end', () => {
+                try {
+                    const response = JSON.parse(data)
+                    objData.wordLastUpdate = new Date().toISOString().substring(0, 10)
+                    jsonData = JSON.stringify(objData)
+                    fs.writeFileSync(filePath, jsonData)
+                    console.log('Response:', response.translation)
+                    return response.translation
+                } catch (error) {
+                    console.error('Error parsing response:', error)
+                }
+            });
+        }).on('error', (error) => {
+            console.error('Error fetching translation:', error)
+        });
+    }
+}
+
+// console.log(translate())
+setInterval(getNewWord, 1000)
+setInterval(translate, 5000)
+translate()
+
+ipcMain.handle('word', async (event) => {
+    const data = getNewWord();
+    return data; // 将数据返回给渲染进程
+});
 
 app.on('ready', () => {
     // 创建课程表窗口
@@ -131,7 +213,7 @@ app.on('ready', () => {
     const winPos = {
         x: (screenSize.width - 1239) / 2,
         y: 0
-    };
+    }
 
     // 设置窗口的位置
     classSchedule.setBounds(winPos);
@@ -166,8 +248,9 @@ app.on('ready', () => {
 
     // console.log(objData)
     ipcMain.handle('fetchDataRequest', async (event) => {
-        const data = objData;
-        return data; // 将数据返回给渲染进程
+        const rawData = fs.readFileSync(filePath)
+        const objData = JSON.parse(rawData)
+        return objData; // 将数据返回给渲染进程
     });
 
     // 退出按钮
@@ -202,8 +285,8 @@ app.on('ready', () => {
     })
 
     const memoriseWords = new BrowserWindow({
-        width: 150,
-        height: 100,
+        width: 300,
+        height: 150,
         autoHideMenuBar: true,
         alwaysOnTop: true,
         x: 100,
@@ -219,13 +302,11 @@ app.on('ready', () => {
     })
 
     memoriseWords.loadFile('./pages/memoriseWords.html')
-    memoriseWords.webContents.send('wordIndex', objData)
-    memoriseWords.webContents.send('wordList', wordListObj)
-    ipcMain.on('updateWordIndex', (event, index) => {
-        objData.wordIndex = index
-        console.log(objData)
-        fs.writeFileSync(filePath, JSON.stringify(objData))
-    })
+    const memorisePos = {
+        x: screenSize.width - 300,
+        y: (screenSize.height - 150) / 2
+    };
+    memoriseWords.setBounds(memorisePos);
 
     // 报错处理
     process.on('uncaughtException', (error) => {

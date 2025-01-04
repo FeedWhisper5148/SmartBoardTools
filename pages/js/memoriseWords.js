@@ -1,18 +1,6 @@
-let wordList = electronAPI.getWords()
-let wordIndex = electronAPI.getWordIndex()
-
-function getWords (wordIndex) {
-    getDate = new Date().toDateString()
-    currentWord = wordList[wordIndex]
-}
-
-function updateWord () {
-    const currentDate = new Date().toDateString()
-    if (currentDate !== getDate) {
-        wordIndex += 1
-        electronAPI.updateWordIndex(wordIndex)
-        getWords(wordIndex)
-    }
-}
-
-let autoUpdate = setInterval(updateWord, 1000)
+document.addEventListener('DOMContentLoaded', async () => {
+    const word = await window.electronAPI.getWord()
+    console.log(word)
+    const wordArea = document.getElementById('wordArea')
+    wordArea.innerText = word
+})
