@@ -34,7 +34,7 @@ const wordListObj = JSON.parse(wordList)
 function showWindow() {
     const index = new BrowserWindow({
         width: 600,
-        height: 400,
+        height: 450,
         autoHideMenuBar: true,
         webPreferences: {
             sandbox: false,
@@ -175,8 +175,27 @@ ipcMain.handle('word', async (event) => {
     return data; // 将数据返回给渲染进程
 });
 
-app.on('ready', () => {
-    // 创建课程表窗口
+function creatIndexWindow() {
+    const index = new BrowserWindow({
+        width: 600,
+        height: 450,
+        autoHideMenuBar: true,
+        webPreferences: {
+            webSecurity: false,
+            sandbox: false,
+            nodeIntegration: true,
+            preload: path.resolve(__dirname, './preload.js')
+        },
+        // show:false
+    })
+
+    index.loadFile('./pages/index.html')
+    index.center()
+
+}
+
+
+function creatClassScheduleWindow() {
     const classSchedule = new BrowserWindow({
         width: 1239,
         height: 100,
@@ -206,11 +225,13 @@ app.on('ready', () => {
     classSchedule.setBounds(winPos);
 
     classSchedule.loadFile('./pages/ClassSchedule.html')
+}
 
-    // 创建主窗口
-    const index = new BrowserWindow({
-        width: 600,
-        height: 400,
+
+function creatEditWindow() {
+    const editClassSchedule = new BrowserWindow({
+        width: 580,
+        height: 700,
         autoHideMenuBar: true,
         webPreferences: {
             webSecurity: false,
@@ -220,16 +241,47 @@ app.on('ready', () => {
         },
         // show:false
     })
+    editClassSchedule.loadFile('./pages/EditClassSchedule.html')
+    editClassSchedule.center()
+}
 
-    index.on("closed", () => {
-        // 在窗口对象被关闭时，取消订阅所有与该窗口相关的事件
-        index.removeAllListeners();
-        // index = null;
-    });
+function creatMemoriseWindow() {
+    const memoriseWords = new BrowserWindow({
+        width: 300,
+        height: 150,
+        autoHideMenuBar: true,
+        alwaysOnTop: true,
+        frame: false,
+        transparent: true,
+        skipTaskbar: true,
+        webPreferences: {
+            nodeIntegration: true,
+            sandbox: false,
+            preload: path.resolve(__dirname, './preload.js')
+        }
+    })
+
+    const screenSize = screen.getPrimaryDisplay().workAreaSize;
+
+    memoriseWords.loadFile('./pages/MemoriseWords.html')
+    const memorisePos = {
+        x: screenSize.width - 300,
+        y: (screenSize.height - 150) / 2
+    };
+    memoriseWords.setBounds(memorisePos);
+
+}
 
 
-    index.loadFile('./pages/index.html')
-    index.center()
+app.on('ready', () => {
+    // 创建课程表窗口
+    creatClassScheduleWindow()
+
+    // 创建主窗口
+    creatIndexWindow()
+
+    // 创建每日一词窗口
+    creatMemoriseWindow()
 
     ipcMain.handle('countDownDayInput', updateCountDownDays)
 
@@ -246,18 +298,9 @@ app.on('ready', () => {
     });
 
     ipcMain.on('showEditWindow', () => {
-        const editClassSchedule = new BrowserWindow({
-            width: 580,
-            height: 700,
-            autoHideMenuBar: true,
-            webPreferences: {
-                webSecurity: false,
-                sandbox: false,
-                nodeIntegration: true,
-                preload: path.resolve(__dirname, './preload.js')
-            },
-            // show:false
-        })
+
+        // 创建编辑课程表窗口
+        creatEditWindow()
 
         // 编辑课程表
         ipcMain.on('editClassSchedule', (event, data) => {
@@ -266,32 +309,7 @@ app.on('ready', () => {
             // console.log(jsonData)
         })
 
-        editClassSchedule.loadFile('./pages/EditClassSchedule.html')
-        editClassSchedule.center()
-
     })
-
-    const memoriseWords = new BrowserWindow({
-        width: 300,
-        height: 150,
-        autoHideMenuBar: true,
-        alwaysOnTop: true,
-        frame: false,
-        transparent: true,
-        skipTaskbar: true,
-        webPreferences: {
-            nodeIntegration: true,
-            sandbox: false,
-            preload: path.resolve(__dirname, './preload.js')
-        }
-    })
-
-    memoriseWords.loadFile('./pages/MemoriseWords.html')
-    const memorisePos = {
-        x: screenSize.width - 300,
-        y: (screenSize.height - 150) / 2
-    };
-    memoriseWords.setBounds(memorisePos);
 
     ipcMain.handle('meaning', async (event) => {
         const rawData = fs.readFileSync(filePath)

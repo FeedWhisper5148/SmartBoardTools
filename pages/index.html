@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <title>SmartBoardTools</title>
     <link rel="stylesheet" href="layui/css/layui.css">
     <link rel="stylesheet" href="css/index.css">
 </head>
+
+<script>
+    function handleFormSubmit(event) {
+        event.preventDefault()
+        // console.log('表单被提交，但页面没有跳转！');
+    }
+</script>
+
 <body>
     <div class="container">
         <div class="nav clearfix">
@@ -17,26 +26,45 @@
             </span>
         </div>
         <div class="main clearfix">
-            <span class="countDownSetting leftfix">
+            <span class="countDownSetting">
                 <!-- <span>倒数日:</span> -->
                 <form class="layui-form" action="">
                     <div class="layui-form-item">
                         <label class="layui-form-label clearfix">倒数日：</label>
                         <div class="layui-input-block leftfix">
-                        <input type="text" required lay-verify="required" placeholder="例如：20250324" autocomplete="off" class="layui-input" id="countDownDayInput">
+                            <input type="text" required lay-verify="required" placeholder="例如：20250324"
+                                autocomplete="off" class="layui-input" id="countDownDayInput">
                         </div>
-                        <button class=layui-btn id="countDownDayButton">确定</button>
+                        <button class=layui-btn id="countDownDayButton" onclick="handleFormSubmit(event)">确定</button>
                     </div>
                 </form>
                 <!-- <button id="countDownDayButton">确定</button> -->
             </span>
         </div>
-        <button class=layui-btn id="editClassScheduleButton">修改课程表</button>
-        <button class=layui-btn id="quit">退出</button>
+        <form class="layui-form">
+            <!-- <button class=layui-btn id="editClassScheduleButton">修改课程表</button>
+            <button class=layui-btn id="quit">退出</button> -->
+            <div class="layui-form-item">
+                <label class="layui-form-label classScheduleSwitch">课程表</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="switch" lay-skin="switch">
+                </div>
+                <br>
+                <label class="layui-form-label">每日一词</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="switch" lay-skin="switch">
+                </div>
+            </div>
+        </form>
+        <form class="layui-form">
+            <button class=layui-btn id="editClassScheduleButton">修改课程表</button>
+            <button class=layui-btn id="quit">退出</button>
+        </form>
         <div class="tip">注：默认上课状态下不会显示课程表，没显示即为上课时间，可在右下角托盘控制软件</div>
         <div class="tip">若您正处于上课时间，将系统时间改为13：00～13：30即可看到课程表页面</div>
     </div>
 </body>
 <script src="layui/layui.all.js" charset="utf-8"></script>
 <script src="./js/index.js"></script>
+
 </html>

@@ -74,9 +74,10 @@ body {
 }
 
 #editClassScheduleButton {
-    margin: 20px;
+    margin: 10px 20px;
 }
 
 #quit {
     background-color: #FF5722;
 }
+
