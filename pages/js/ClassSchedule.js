@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 // 判断当前是否为上课时间，如果是，就隐藏窗口
                 if (currentTimeInSeconds >= startTimeInSeconds && currentTimeInSeconds < endTimeInSeconds) {
-                    document.getElementById('container').style.visibility = 'hidden'
+                    // document.getElementById('container').style.visibility = 'hidden'
                     return { isClassTime: true, courseIndex: i };
                     // 如果不是，就给下一节课添加动画
                 } else if (currentTimeInSeconds < startTimeInSeconds && startTimeInSeconds < nextClassTimeInSeconds) {

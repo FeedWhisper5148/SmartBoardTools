@@ -9,7 +9,10 @@ const userFile = app.getPath('userData')
 const filePath = path.join(userFile, 'SmartBoardTools.json')
 const wordListPath = path.join(userFile, 'wordList.json')
 
-let objData = {}
+let classSchedule
+let index
+let memoriseWords
+let editClassSchedule
 
 // 判断数据文件是否存在，若不存在则创建默认的数据文件
 function writeDefalutData() {
@@ -29,22 +32,6 @@ function writeDefalutData() {
 writeDefalutData()
 const wordList = fs.readFileSync(wordListPath)
 const wordListObj = JSON.parse(wordList)
-
-// 点击托盘上的选项是重新创建主窗口
-function showWindow() {
-    const index = new BrowserWindow({
-        width: 600,
-        height: 450,
-        autoHideMenuBar: true,
-        webPreferences: {
-            sandbox: false,
-            nodeIntegration: true,
-            preload: path.resolve(__dirname, './preload.js')
-        },
-    })
-    index.loadFile('./pages/index.html')
-    index.center()
-}
 
 // 修改倒数日
 function updateCountDownDays(event, data) {
@@ -176,10 +163,10 @@ ipcMain.handle('word', async (event) => {
 });
 
 function creatIndexWindow() {
-    const index = new BrowserWindow({
+    index = new BrowserWindow({
         width: 600,
         height: 450,
-        autoHideMenuBar: true,
+        autoHideMenuBar: false,
         webPreferences: {
             webSecurity: false,
             sandbox: false,
@@ -196,7 +183,7 @@ function creatIndexWindow() {
 
 
 function creatClassScheduleWindow() {
-    const classSchedule = new BrowserWindow({
+    classSchedule = new BrowserWindow({
         width: 1239,
         height: 100,
         autoHideMenuBar: true,
@@ -229,7 +216,7 @@ function creatClassScheduleWindow() {
 
 
 function creatEditWindow() {
-    const editClassSchedule = new BrowserWindow({
+    editClassSchedule = new BrowserWindow({
         width: 580,
         height: 700,
         autoHideMenuBar: true,
@@ -246,7 +233,7 @@ function creatEditWindow() {
 }
 
 function creatMemoriseWindow() {
-    const memoriseWords = new BrowserWindow({
+    memoriseWords = new BrowserWindow({
         width: 300,
         height: 150,
         autoHideMenuBar: true,
@@ -282,8 +269,9 @@ app.on('ready', () => {
 
     // 创建每日一词窗口
     creatMemoriseWindow()
+  
 
-    ipcMain.handle('countDownDayInput', updateCountDownDays)
+    ipcMain.on('countDownDayInput', updateCountDownDays)
 
     // console.log(objData)
     ipcMain.handle('fetchDataRequest', async (event) => {
@@ -291,6 +279,43 @@ app.on('ready', () => {
         const objData = JSON.parse(rawData)
         return objData; // 将数据返回给渲染进程
     });
+
+    ipcMain.on('showClassScheduleWindow', () => {
+        classSchedule.show()
+    })
+
+    ipcMain.on('hideClassScheduleWindow', () => {
+        classSchedule.hide()
+    })
+
+    ipcMain.on('showMemoriseWindow', () => {
+        memoriseWords.show()
+    })
+
+    ipcMain.on('hideMemoriseWindow', () => {
+        memoriseWords.hide()
+    })
+
+    ipcMain.on('showIndexWindow', () => {
+        creatIndexWindow()
+    })
+
+    ipcMain.on('showEditWindow', () => {
+        // creatEditWindow()
+    })
+
+    // 读取配置文件
+    // const filePath = path.join(__dirname, 'config.json')
+    const rawData = fs.readFileSync(filePath)
+    const objData = JSON.parse(rawData)
+    // console.log(objData)
+    // 更新倒计时天数
+    function updateCountDownDays(event, date) {
+        objData.countDownDays = date
+        let jsonData = JSON.stringify(objData)
+        fs.writeFileSync(filePath, jsonData)
+        // console.log(jsonData)
+    }
 
     // 退出按钮
     ipcMain.on('quitApp', () => {
@@ -337,10 +362,10 @@ app.on('ready', () => {
     const tray = new Tray(trayIconPath);
     tray.setToolTip('智慧白板助手')
     const contextMenu = Menu.buildFromTemplate([
-        { label: '显示主界面', click: () => { showWindow() } },
+        { label: '显示主界面', click: () => { creatIndexWindow() } },
         { label: '退出', click: () => { app.quit(); } },
     ])
-    tray.setContextMenu(contextMenu);
+    tray.setContextMenu(contextMenu)
 })
 
 app.on('window-all-closed', () => {

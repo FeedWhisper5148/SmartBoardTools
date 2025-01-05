@@ -41,21 +41,22 @@
                 <!-- <button id="countDownDayButton">确定</button> -->
             </span>
         </div>
-        <form class="layui-form">
+        <br>
+        <!-- <form class="layui-form switch"> -->
             <!-- <button class=layui-btn id="editClassScheduleButton">修改课程表</button>
             <button class=layui-btn id="quit">退出</button> -->
             <div class="layui-form-item">
-                <label class="layui-form-label classScheduleSwitch">课程表</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="switch" lay-skin="switch">
+                    <label class="lable">课程表</label>
+                    <input type="checkbox" checked class="switch" id="classScheduleSwitch" title="课程表"> 
                 </div>
                 <br>
-                <label class="layui-form-label">每日一词</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="switch" lay-skin="switch">
+                    <label class="lable">每日一词</label>
+                    <input type="checkbox" checked class="switch" id="memoriseWordSwitch" title="每日一词"> 
                 </div>
             </div>
-        </form>
+        <!-- </form> -->
         <form class="layui-form">
             <button class=layui-btn id="editClassScheduleButton">修改课程表</button>
             <button class=layui-btn id="quit">退出</button>

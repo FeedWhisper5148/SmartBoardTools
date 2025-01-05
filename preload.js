@@ -64,5 +64,17 @@ contextBridge.exposeInMainWorld('electronAPI', {
             console.error('Error fetching data:', error);
             throw error; // 将错误抛出给调用者
         }
+    },
+    showClassScheduleWindow: () => {
+        ipcRenderer.send('showClassScheduleWindow')
+    },
+    hideClassScheduleWindow: () => {
+        ipcRenderer.send('hideClassScheduleWindow')
+    },
+    showMemoriseWindow: () => {
+        ipcRenderer.send('showMemoriseWindow')
+    },
+    hideMemoriseWindow: () => {
+        ipcRenderer.send('hideMemoriseWindow')
     }
 })
