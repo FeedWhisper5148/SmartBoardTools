@@ -2,7 +2,11 @@ const { app, BrowserWindow, screen, ipcMain } = require('electron')
 const path = require('path')
 const fs = require('fs')
 const { Menu, Tray } = require('electron')
-const https = require('https');
+const https = require('https')
+const axios = require('axios')
+const querystring = require('querystring')
+const crypto = require('crypto')
+const { REPL_MODE_SLOPPY } = require('repl')
 
 // 获取用户数据目录的路径
 const userFile = app.getPath('userData')
@@ -13,6 +17,7 @@ let classSchedule
 let index
 let memoriseWords
 let editClassSchedule
+let aiWindow
 
 // 判断数据文件是否存在，若不存在则创建默认的数据文件
 function writeDefalutData() {
@@ -70,13 +75,11 @@ function getNewWord() {
         return currentWord
     } else {
         currentWord = wordListObj.list[objData.wordListIndex]
-        console.log(currentWord)
+        // console.log(currentWord)
         return currentWord
     }
 }
 
-const querystring = require('querystring')
-const crypto = require('crypto')
 
 function translate() {
     // 有道翻译API的配置信息
@@ -148,10 +151,40 @@ function translate() {
             console.error('Error fetching translation:', error)
         });
     } else {
-        console.log('no need to update')
+        // console.log('no need to update')
     }
 }
 
+function aiModel(message) {
+    const url = 'https://spark-api-open.xf-yun.com/v1/chat/completions';
+    const headers = {
+        'Authorization': 'Bearer wDTvhPRoyfDDAuDegQtP:DuEJNTkoCMIrvwhJmojx',
+        'Content-Type': 'application/json'
+    };
+    const data = {
+        model: "4.0Ultra",
+        messages: [
+            {
+                role: "user",
+                content: message
+            }
+        ],
+        stream: false,
+        max_tokens: 5000
+    };
+
+    return axios.post(url, data, { headers }) // 返回 Promise
+        .then(response => {
+            // console.log(response.data);
+            return response.data; // 在 Promise 中返回数据
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            throw error; // 重新抛出错误以便调用者可以处理
+        })
+}
+
+// aiModel()
 // console.log(translate())
 setInterval(getNewWord, 1000)
 setInterval(translate, 5000)
@@ -256,7 +289,26 @@ function creatMemoriseWindow() {
         y: (screenSize.height - 150) / 2
     };
     memoriseWords.setBounds(memorisePos);
+}
 
+function createAiWindow() {
+    aiWindow = new BrowserWindow({
+        width: 425,
+        height: 600,
+        autoHideMenuBar: false,
+        alwaysOnTop: false,
+        frame: true,
+        transparent: false,
+        skipTaskbar: false,
+        webPreferences: {
+            nodeIntegration: true,
+            sandbox: false,
+            preload: path.resolve(__dirname, './preload.js')
+        }
+    })
+
+    aiWindow.loadFile('./pages/AI.html')
+    aiWindow.center()
 }
 
 
@@ -269,7 +321,20 @@ app.on('ready', () => {
 
     // 创建每日一词窗口
     creatMemoriseWindow()
-  
+
+    // 创建AI窗口
+    createAiWindow()
+
+    let result
+
+    ipcMain.on('userSend', (event, data) => {
+        aiModel(data).then(data => {
+            console.log('Received data:', data)
+            event.reply('aiResult', data)
+        }).catch(error => {
+            console.error('Failed to receive data:', error)
+        });
+    })
 
     ipcMain.on('countDownDayInput', updateCountDownDays)
 
@@ -278,7 +343,7 @@ app.on('ready', () => {
         const rawData = fs.readFileSync(filePath)
         const objData = JSON.parse(rawData)
         return objData; // 将数据返回给渲染进程
-    });
+    })
 
     ipcMain.on('showClassScheduleWindow', () => {
         classSchedule.show()
@@ -310,12 +375,12 @@ app.on('ready', () => {
     const objData = JSON.parse(rawData)
     // console.log(objData)
     // 更新倒计时天数
-    function updateCountDownDays(event, date) {
-        objData.countDownDays = date
-        let jsonData = JSON.stringify(objData)
-        fs.writeFileSync(filePath, jsonData)
-        // console.log(jsonData)
-    }
+    // function updateCountDownDays(event, date) {
+    //     objData.countDownDays = date
+    //     let jsonData = JSON.stringify(objData)
+    //     fs.writeFileSync(filePath, jsonData)
+    //     // console.log(jsonData)
+    // }
 
     // 退出按钮
     ipcMain.on('quitApp', () => {

@@ -1,0 +1,16 @@
+.container {
+    position: relative;
+    width: 400px;
+    height: 500px;
+    /* background-color: skyblue; */
+}
+
+.send {
+    width: 395px;
+    position: absolute;
+    bottom: 0;
+}
+
+.result {
+    height: 300px;
+}

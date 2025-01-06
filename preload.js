@@ -24,9 +24,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
         }
     },
     updateCountDownDays: (date) => {
-        ipcRenderer.invoke('countDownDayInput', date).then((response) => {
-            console.log('Response from main process:', response);
-        })
+        ipcRenderer.send('countDownDayInput', date)
     },
     async getCountDays() {
         try {
@@ -76,5 +74,17 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
     hideMemoriseWindow: () => {
         ipcRenderer.send('hideMemoriseWindow')
-    }
+    },
+    getUserSend: (data) => {
+        ipcRenderer.send('userSend', data)
+    },
+    getAiResult: () => {
+        ipcRenderer.on('aiResult', (event, data) => {
+            return data
+        })
+    },
+    receive: (channel, func) => {
+        // 监听来自主进程的回复
+        ipcRenderer.on(channel, (event, args) => func(args));
+      }
 })
