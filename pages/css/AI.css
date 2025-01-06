@@ -1,16 +1,41 @@
+.leftfix {
+    float: left;
+}
+
+.clearfix:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
 .container {
     position: relative;
     width: 400px;
     height: 500px;
     /* background-color: skyblue; */
+    overflow: hidden;
 }
 
-.send {
-    width: 395px;
-    position: absolute;
-    bottom: 0;
+#send {
+    /* width: 395px;
+    position: absolute; */
+    /* bottom: 0; */
+    margin-left: 220px;
 }
 
 .result {
-    height: 300px;
+    height: 332px;
+    padding: 15px;
+    overflow: auto;
+}
+
+.layui-form {
+    overflow: hidden;
+}
+
+.tip {
+    line-height: 38px;
+    position: relative;
+    left: 15px;
+    color: grey;
 }

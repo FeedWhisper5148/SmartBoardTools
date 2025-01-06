@@ -86,5 +86,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     receive: (channel, func) => {
         // 监听来自主进程的回复
         ipcRenderer.on(channel, (event, args) => func(args));
-      }
+    },
+    onDataChunk: (callback) => ipcRenderer.on('data-chunk', callback)
 })

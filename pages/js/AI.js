@@ -4,12 +4,14 @@ const sendButton = document.getElementById('send')
 const resultArea = document.getElementById('result')
 
 sendButton.addEventListener('click', () => {
+    // resultArea.innerHTML('加载中…')
+    resultArea.innerHTML = ''
     const userSendContent = userSend.value
     electronAPI.getUserSend(userSendContent)
-    console.log(electronAPI.getAiResult())
+    // console.log(electronAPI.getAiResult())
     window.electronAPI.receive('aiResult', (reply) => {
         console.log(reply)
-        resultArea.innerHTML = reply.choices[0].message.content
+        resultArea.innerHTML += reply.choices[0].message.content
       });
 })
 })

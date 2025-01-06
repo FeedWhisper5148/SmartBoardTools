@@ -293,8 +293,8 @@ function creatMemoriseWindow() {
 
 function createAiWindow() {
     aiWindow = new BrowserWindow({
-        width: 425,
-        height: 600,
+        width: 415,
+        height: 570,
         autoHideMenuBar: false,
         alwaysOnTop: false,
         frame: true,

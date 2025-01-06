@@ -2,14 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="layui/css/layui.css">
     <link rel="stylesheet" href="./css/AI.css">
     <title>AI</title>
 </head>
 <body>
     <div class="container" id="response">
         <div class="result" id="result"></div>
-        <textarea name="" required lay-verify="required" placeholder="请输入" class="layui-textarea send" id="userSend"></textarea>
-        <button id="send">发送</button>
+        <div class="layui-form clearfix">
+            <div class="tip leftfix">发送后请等待数秒</div>
+            <button class="layui-btn" id="send">发送</button>
+            <textarea required lay-verify="required" placeholder="请输入" class="layui-textarea" id="userSend"></textarea>
+        </div>
     </div>
 </body>
 <script src="./js/AI.js"></script>
