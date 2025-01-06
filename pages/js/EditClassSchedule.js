@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const courseInput = document.getElementById('course')
         const submitButton = document.getElementById('confirm')
         const regexWeek = /[1-7]/;
-        const regexIndex = /^(1[0-1]|[2-9])$/;
+        const regexIndex = /^(1[0-1]|[1-9])$/
 
         let currentSchedule = ''; // 声明并初始化变量
         for (let dayIndex = 0; dayIndex < classSchedule.length; dayIndex++) {
@@ -29,23 +29,27 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const week = [0, 1, 2, 3, 4, 5, 6, 0]
                 formatedWeek = week[parseInt(weekInpuut.value)]
             } else {
-                alert('星期应输入阿拉伯数字1～7')
+                layui.layer.msg('星期应输入阿拉伯数字1～7')
+                // alert('星期应输入阿拉伯数字1～7')
             }
 
             if (!isNaN(indexInput.value) && regexIndex.test(parseInt(indexInput.value))) {
                 const index = [0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                 formatedIndex = index[parseInt(indexInput.value)]
             } else {
-                alert('节数应输入阿拉伯数字1～11')
+                layui.layer.msg('节数应输入阿拉伯数字1～11')
+                // alert('节数应输入阿拉伯数字1～11')
             }
 
             if (courseInput.value.length == 1) {
                 data.classSchedule[formatedWeek][formatedIndex].course = courseInput.value
                 console.log(data)
                 electronAPI.editClassSchedule(data)
-                alert('修改成功，重启APP后生效')
+                layui.layer.msg('修改成功，重启APP后生效')
+                // alert('修改成功，重启APP后生效')
             } else {
                 alert('课程名称应输入一个汉字')
+                layui.layer,msg('课程名称应输入一个汉字')
             }
         })
 

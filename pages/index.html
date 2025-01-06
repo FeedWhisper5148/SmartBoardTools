@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>SmartBoardTools</title>
-    <link rel="stylesheet" href="layui/css/layui.css">
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="./layui/css/layui.css">
+    <link rel="stylesheet" href="./css/index.css">
 </head>
 
 <script>
@@ -41,31 +41,26 @@
                 <!-- <button id="countDownDayButton">确定</button> -->
             </span>
         </div>
-        <br>
-        <!-- <form class="layui-form switch"> -->
-            <!-- <button class=layui-btn id="editClassScheduleButton">修改课程表</button>
-            <button class=layui-btn id="quit">退出</button> -->
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <label class="lable">课程表</label>
-                    <input type="checkbox" checked class="switch" id="classScheduleSwitch" title="课程表"> 
-                </div>
-                <br>
-                <div class="layui-input-block">
-                    <label class="lable">每日一词</label>
-                    <input type="checkbox" checked class="switch" id="memoriseWordSwitch" title="每日一词"> 
-                </div>
+        <div class="layui-form switch">
+            <div class="layui-form-item classScheduleSwitch">
+                <span class="label">课程表&nbsp;</span>
+                <input checked type="checkbox" name="AAA" lay-skin="switch" lay-filter="classScheduleSwitch">
             </div>
-        <!-- </form> -->
-        <form class="layui-form">
-            <button class=layui-btn id="editClassScheduleButton">修改课程表</button>
-            <button class=layui-btn id="quit">退出</button>
-        </form>
-        <div class="tip">注：默认上课状态下不会显示课程表，没显示即为上课时间，可在右下角托盘控制软件</div>
-        <div class="tip">若您正处于上课时间，将系统时间改为13：00～13：30即可看到课程表页面</div>
+            <div class="layui-form-item">
+                <span class="label">每日一词&nbsp;</span>
+                <input checked type="checkbox" name="AAA" lay-skin="switch" lay-filter="memoriseSwitch">
+            </div>
+        </div>
+    </div>
+    <form class="layui-form">
+        <button class=layui-btn id="editClassScheduleButton">修改课程表</button>
+        <button class=layui-btn id="quit">退出</button>
+    </form>
+    <div class="tip">注：默认上课状态下不会显示课程表，没显示即为上课时间，可在右下角托盘控制软件</div>
+    <div class="tip">若您正处于上课时间，将系统时间改为13：00～13：30即可看到课程表页面</div>
     </div>
 </body>
-<script src="layui/layui.all.js" charset="utf-8"></script>
+<script src="./layui/layui.js" charset="utf-8"></script>
 <script src="./js/index.js"></script>
 
 </html>

@@ -81,10 +81,21 @@ body {
     background-color: #FF5722;
 }
 
-/* .switch {
+.switch {
     margin-left: 30px;
-} */
+}
 
-.lable {
-    margin-left: 10px;
+.label {
+    padding-left: 10px;
+    position: relative;
+    top: 4px;
+}
+
+.layui-form-item {
+    overflow: hidden;
+}
+
+.classScheduleSwitch {
+    position: relative;
+    left: 13px;
 }
