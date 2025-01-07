@@ -374,7 +374,6 @@ app.on('ready', () => {
     // 读取配置文件
     // const filePath = path.join(__dirname, 'config.json')
     const rawData = fs.readFileSync(filePath)
-    const objData = JSON.parse(rawData)
     // console.log(objData)
     // 更新倒计时天数
     // function updateCountDownDays(event, date) {
