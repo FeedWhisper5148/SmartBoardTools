@@ -1,4 +1,4 @@
-const { app, BrowserWindow, screen, ipcMain } = require('electron')
+const { app, BrowserWindow, screen, ipcMain, webContents } = require('electron')
 const path = require('path')
 const fs = require('fs')
 const { Menu, Tray } = require('electron')
@@ -49,11 +49,12 @@ function updateCountDownDays(event, data) {
     jsonData.countDownDays = formatData
     const modifiedData = JSON.stringify(jsonData)
     fs.writeFileSync(filePath, modifiedData)
+    return formatData
     // console.log(formatData)
-    ipcMain.handle('getCountDownDays', async (event) => {
-        const data = formatData;
-        return data; // 将数据返回给渲染进程
-    });
+    // ipcMain.handle('getCountDownDays', async (event) => {
+    //     const data = formatData;
+    //     return data; // 将数据返回给渲染进程
+    // });
 }
 
 let currentWord = ''
@@ -338,7 +339,17 @@ app.on('ready', () => {
         });
     })
 
-    ipcMain.on('countDownDayInput', updateCountDownDays)
+    // ipcMain.on('countDownDayInput', updateCountDownDays)
+
+    ipcMain.on('countDownDayInput', (event, data) => {
+        // 接收渲染进程发送的数据
+        console.log('Data received in main process:', data)
+     
+        let formatData = updateCountDownDays(event, data)
+     
+        // 然后将更新后的数据发送回渲染进程
+        classSchedule.webContents.send('changedCountDownDays', formatData);
+      })
 
     // console.log(objData)
     ipcMain.handle('fetchDataRequest', async (event) => {
@@ -397,6 +408,8 @@ app.on('ready', () => {
         ipcMain.on('editClassSchedule', (event, data) => {
             let jsonData = JSON.stringify(data)
             fs.writeFileSync(filePath, jsonData)
+            classSchedule.webContents.send('changedClassSchedule', data)
+            // editClassSchedule.webContents.send('changedClassScheduleToEdi')
             // console.log(jsonData)
         })
 

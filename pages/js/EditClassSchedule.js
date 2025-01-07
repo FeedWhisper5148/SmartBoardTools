@@ -2,7 +2,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const data = await window.electronAPI.fetchData()
         console.log('Fetched data:', data)
-        const classSchedule = data.classSchedule
+        let classSchedule = data.classSchedule
+
+        // 课程表修改后热更新
+        // electronAPI.getChangedClassSchedule((data) => {
+        //     classSchedule = data.classSchedule
+        //     showClassSchedule()
+        // })
+
         const currentScheduleContent = document.getElementById('currentClassSchedule')
         const weekInpuut = document.getElementById('week')
         const indexInput = document.getElementById('index')
@@ -10,19 +17,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         const submitButton = document.getElementById('confirm')
         const regexWeek = /[1-7]/;
         const regexIndex = /^(1[0-1]|[1-9])$/
-
         let currentSchedule = ''; // 声明并初始化变量
-        for (let dayIndex = 0; dayIndex < classSchedule.length; dayIndex++) {
-            for (let courseIndex = 0; courseIndex < classSchedule[dayIndex].length; courseIndex++) {
-                currentSchedule += classSchedule[dayIndex][courseIndex].course
+
+
+        function showClassSchedule() {
+            for (let dayIndex = 0; dayIndex < classSchedule.length; dayIndex++) {
+                for (let courseIndex = 0; courseIndex < classSchedule[dayIndex].length; courseIndex++) {
+                    currentSchedule += classSchedule[dayIndex][courseIndex].course
+                }
+                currentSchedule += '<br><br>'
             }
-            currentSchedule += '<br><br>'
+
+            // console.log(currentSchedule)
+            console.log(classSchedule)
+            currentScheduleContent.innerHTML = currentSchedule
+            currentScheduleContent.setAttribute('class', 'content')
         }
 
-        // console.log(currentSchedule)
-        console.log(classSchedule)
-        currentScheduleContent.innerHTML = currentSchedule
-        currentScheduleContent.setAttribute('class', 'content')
+        showClassSchedule()
+
 
         submitButton.addEventListener('click', () => {
             if (!isNaN(weekInpuut.value) && regexWeek.test(parseInt(weekInpuut.value))) {
@@ -49,7 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // alert('修改成功，重启APP后生效')
             } else {
                 alert('课程名称应输入一个汉字')
-                layui.layer,msg('课程名称应输入一个汉字')
+                layui.layer, msg('课程名称应输入一个汉字')
             }
         })
 

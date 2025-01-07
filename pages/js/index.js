@@ -38,7 +38,7 @@ countDownDayButton.addEventListener('click', () => {
     const date = countDownDayInput.value
     if (reg.test(date)) {
         electronAPI.updateCountDownDays(date)
-        layer.msg('设置成功，重新打开APP后生效')
+        layer.msg('修改成功')
     } else {
         layer.msg('请输入有效的日期')
     }

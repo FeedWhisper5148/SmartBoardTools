@@ -1,13 +1,24 @@
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        let targetDate
         const data = await window.electronAPI.fetchData();
-        console.log('Fetched data:', data);
-        // 处理获取到的数据
         let classSchedule = data.classSchedule
+        console.log('Fetched data:', data);
+        // console.log(classSchedule)
+        targetDate = new Date(data.countDownDays)
 
-        console.log(classSchedule)
-        let targetDate = new Date(data.countDownDays)
+        // 倒数日修改后热更新
+        electronAPI.getChangedCountDownDays((data) => {
+            targetDate = new Date(data)
+            console.log(data)
+        })
 
+        // 课程表修改后热更新
+        electronAPI.getChangedClassSchedule((data) => {
+            classSchedule = data.classSchedule
+        })
+
+        // 计算倒数日
         function getCountDays() {
             let currentDate = new Date()
             // console.log(targetDate)
@@ -18,6 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('countDownTimer').innerHTML = String(dateDistanceDays)
         }
 
+        // 获取当天的课程表
         function getScheduleForToday() {
             const now = new Date();
             const dayOfWeek = now.getDay(); // 0 是星期日，1 是星期一，...，6 是星期六
@@ -60,7 +72,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     document.getElementById('container').style.visibility = 'visible'
                     document.getElementById(`class${i - 1}`).removeAttribute('class', 'nextCourse')
                     nextClassTimeInSeconds = startTimeInSeconds;
-                    
+
                     // 计算到下一节的时间
                     let countDownToNextCourse = startTimeInSeconds - currentTimeInSeconds
                     let countDownToNextCourseInMinutes = Math.floor(countDownToNextCourse / 60)

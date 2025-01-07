@@ -26,6 +26,18 @@ contextBridge.exposeInMainWorld('electronAPI', {
     updateCountDownDays: (date) => {
         ipcRenderer.send('countDownDayInput', date)
     },
+    getChangedCountDownDays(callback) {
+        ipcRenderer.on('changedCountDownDays', (event, data) => {
+            callback(data)
+            // console.log(data)
+        })
+    },
+    getChangedClassSchedule(callback) {
+        ipcRenderer.on('changedClassSchedule', (event, data) => {
+            callback(data)
+            // console.log(data)
+        })
+    },
     async getCountDays() {
         try {
             const data = await ipcRenderer.invoke('getData');
