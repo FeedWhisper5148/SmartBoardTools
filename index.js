@@ -200,6 +200,7 @@ function creatIndexWindow() {
         width: 600,
         height: 450,
         autoHideMenuBar: false,
+        icon: path.resolve(__dirname, './favicon.ico'),
         webPreferences: {
             webSecurity: false,
             sandbox: false,
@@ -253,6 +254,7 @@ function creatEditWindow() {
         width: 580,
         height: 700,
         autoHideMenuBar: true,
+        icon: path.resolve(__dirname, './favicon.ico'),
         webPreferences: {
             webSecurity: false,
             sandbox: false,
@@ -300,6 +302,7 @@ function createAiWindow() {
         frame: true,
         transparent: false,
         skipTaskbar: false,
+        icon: path.resolve(__dirname, './favicon.ico'),
         webPreferences: {
             nodeIntegration: true,
             sandbox: false,
@@ -322,10 +325,9 @@ app.on('ready', () => {
     // 创建每日一词窗口
     creatMemoriseWindow()
 
-    // 创建AI窗口
-    createAiWindow()
-
-    let result
+    ipcMain.on('creatAiWindow', () => {
+        createAiWindow()
+    })
 
     ipcMain.on('userSend', (event, data) => {
         aiModel(data).then(data => {

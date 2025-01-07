@@ -2,6 +2,7 @@ const countDownDayInput = document.getElementById('countDownDayInput')
 const countDownDayButton = document.getElementById('countDownDayButton')
 const quitButton = document.getElementById('quit')
 const editButton = document.getElementById('editClassScheduleButton')
+const aiButton = document.getElementById('aiButton')
 const classScheduleSwitch = document.getElementById('classScheduleSwitch')
 const memoriseWordSwitch = document.getElementById('memoriseWordSwitch')
 const reg = /^\d{8}$/
@@ -33,21 +34,6 @@ layui.use(function () {
     })
 })
 
-
-function updateMemoriseState() {
-    if (memoriseWordSwitch.checked) {
-        electronAPI.showMemoriseWindow()
-        // console.log('show')
-    } else {
-        electronAPI.hideMemoriseWindow()
-        // console.log('hide')
-    }
-    console.log(memoriseWordSwitch.value)
-}
-
-// setInterval(updateMemoriseState, 1000)
-
-
 countDownDayButton.addEventListener('click', () => {
     const date = countDownDayInput.value
     if (reg.test(date)) {
@@ -65,6 +51,10 @@ quitButton.addEventListener('click', () => {
 
 editButton.addEventListener('click', () => {
     electronAPI.showEditWindow()
+})
+
+aiButton.addEventListener('click', () => {
+    electronAPI.creatAiWindow()
 })
 
 // layui.form.on('click(classScheduleSwitch)', returnData)

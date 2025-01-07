@@ -75,6 +75,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     hideMemoriseWindow: () => {
         ipcRenderer.send('hideMemoriseWindow')
     },
+    creatAiWindow: () => {
+        ipcRenderer.send('creatAiWindow')
+    },
     getUserSend: (data) => {
         ipcRenderer.send('userSend', data)
     },
