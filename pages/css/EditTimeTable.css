@@ -16,6 +16,30 @@ a {
 
 body {
     width: 400px;
-    height: 500px;
+    height: 800px;
     overflow: hidden;
+}
+
+.title {
+    /* width: 568px; */
+    font-size: 20px;
+    text-align: center;
+    background-color: #5FB878;
+    height: 40px;
+    line-height: 40px;
+    color: white;
+}
+
+.layui-table td {
+    /* line-height: 5px; */
+    padding: 5px 14px;
+}
+
+.layui-input {
+    width: 70px;
+    margin: 10px;
+}
+
+.layui-btn {
+    margin-left: 120px;
 }

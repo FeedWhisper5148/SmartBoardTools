@@ -18,6 +18,7 @@ let index
 let memoriseWords
 let editClassSchedule
 let aiWindow
+let editTimeTable
 
 // 判断数据文件是否存在，若不存在则创建默认的数据文件
 function writeDefalutData() {
@@ -317,9 +318,9 @@ function createAiWindow() {
 }
 
 function creatEditTimeTableWindow() {
-    const editTimeTable = new BrowserWindow({
+    editTimeTable = new BrowserWindow({
         width: 400,
-        height: 500,
+        height: 750,
         autoHideMenuBar: false,
         alwaysOnTop: false,
         frame: true,
@@ -446,6 +447,16 @@ app.on('ready', () => {
         const meaning = JSON.parse(rawData).wordMeaning
         return meaning // 将数据返回给渲染进程
     })
+
+    ipcMain.on('editTimeTable', (event, data) => {
+        const objData = JSON.parse(rawData)
+        console.log(data)
+        objData.timeTable = data
+        const jsonData = JSON.stringify(objData)
+        fs.writeFileSync(filePath, jsonData)
+        editTimeTable.webContents.send('changedTimeTable', data)
+    })
+
 
     // 报错处理
     process.on('uncaughtException', (error) => {

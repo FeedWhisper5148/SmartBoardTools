@@ -14,6 +14,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.log(data)
         })
 
+        // 时间表修改后热更新
+        electronAPI.receive('changedTimeTable', (data) => {
+            targetDate = new Date(data)
+            console.log(data)
+            data.timeTable = data
+        })
+
         // 课程表修改后热更新
         electronAPI.getChangedClassSchedule((data) => {
             classSchedule = data.classSchedule

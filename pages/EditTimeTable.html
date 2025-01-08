@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+<script>
+    function handleFormSubmit(event) {
+        event.preventDefault()
+        // console.log('表单被提交，但页面没有跳转！');
+    }
+</script>
+
 <head>
     <meta charset="UTF-8">
     <title>修改时间表</title>
     <link rel="stylesheet" href="./layui/css/layui.css">
     <link rel="stylesheet" href="./css/EditTimeTable.css">
 </head>
+
 <body>
     <div class="container">
         <div class="currentTimeTable">
@@ -19,23 +27,86 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td id="class0"><td id="time1"></td></td></tr>
-                        <tr><td id="class1"><td id="time1"></td></td></tr>
-                        <tr><td id="class2"><td id="time2"></td></td></tr>
-                        <tr><td id="class3"><td id="time3"></td></td></tr>
-                        <tr><td id="class4"><td id="time4"></td></td></tr>
-                        <tr><td id="class5"><td id="time5"></td></td></tr>
-                        <tr><td id="class6"><td id="time6"></td></td></tr>
-                        <tr><td id="class7"><td id="time7"></td></td></tr>
-                        <tr><td id="class8"><td id="time8"></td></td></tr>
-                        <tr><td id="class9"><td id="time9"></td></td></tr>
-                        <tr><td id="class10"><td id="time10"></td></td></tr>
+                        <tr>
+                            <td id="class0">第一节
+                            <td id="time0"></td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="class1">第二节
+                            <td id="time1"></td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="class2">第三节
+                            <td id="time2"></td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="class3">第四节
+                            <td id="time3"></td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="class4">第五节
+                            <td id="time4"></td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="class5">第六节
+                            <td id="time5"></td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="class6">第七节
+                            <td id="time6"></td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="class7">第八节
+                            <td id="time7"></td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="class8">第九节
+                            <td id="time8"></td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="class9">第十节
+                            <td id="time9"></td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="class10">第十一节
+                            <td id="time10"></td>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+        <div class="title">修改时间表</div>
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">节数：</label>
+                <div class="layui-input-block">
+                    <input id="index" type="text" required lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+                <label class="layui-form-label">上课时间：</label>
+                <div class="layui-input-block">
+                    <input id="start" type="text" required lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+                <label class="layui-form-label">下课时间：</label>
+                <div class="layui-input-block">
+                    <input id="end" type="text" required lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+                <button class=layui-btn id="btn" onclick="handleFormSubmit(event)">确定</button>
+            </div>
+        </form>
     </div>
 </body>
 <script src="./layui/layui.js"></script>
 <script src="./js/EditTimeTable.js"></script>
+
 </html>
