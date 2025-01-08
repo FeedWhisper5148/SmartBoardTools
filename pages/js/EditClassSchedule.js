@@ -5,10 +5,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         let classSchedule = data.classSchedule
 
         // 课程表修改后热更新
-        // electronAPI.getChangedClassSchedule((data) => {
-        //     classSchedule = data.classSchedule
-        //     showClassSchedule()
-        // })
+        electronAPI.getChangedClassSchedule((data) => {
+            classSchedule = data.classSchedule
+            console.log(data)
+            showClassSchedule()
+        })
 
         const currentScheduleContent = document.getElementById('currentClassSchedule')
         const weekInpuut = document.getElementById('week')
@@ -21,6 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
         function showClassSchedule() {
+            currentSchedule = ''
             for (let dayIndex = 0; dayIndex < classSchedule.length; dayIndex++) {
                 for (let courseIndex = 0; courseIndex < classSchedule[dayIndex].length; courseIndex++) {
                     currentSchedule += classSchedule[dayIndex][courseIndex].course
@@ -58,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 data.classSchedule[formatedWeek][formatedIndex].course = courseInput.value
                 console.log(data)
                 electronAPI.editClassSchedule(data)
-                layui.layer.msg('修改成功，重启APP后生效')
+                layui.layer.msg('修改成功')
                 // alert('修改成功，重启APP后生效')
             } else {
                 alert('课程名称应输入一个汉字')

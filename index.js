@@ -409,6 +409,7 @@ app.on('ready', () => {
             let jsonData = JSON.stringify(data)
             fs.writeFileSync(filePath, jsonData)
             classSchedule.webContents.send('changedClassSchedule', data)
+            editClassSchedule.webContents.send('changedClassSchedule', data)
             // editClassSchedule.webContents.send('changedClassScheduleToEdi')
             // console.log(jsonData)
         })
