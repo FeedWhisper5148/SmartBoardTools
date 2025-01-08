@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         let targetDate
         const data = await window.electronAPI.fetchData();
         let classSchedule = data.classSchedule
+        let timeTable = data.timeTable
         console.log('Fetched data:', data);
         // console.log(classSchedule)
         targetDate = new Date(data.countDownDays)
@@ -49,14 +50,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             let nextClassTimeInSeconds = Infinity;
             for (let i = 0; i < schedule.length; i++) {
                 // console.log(schedule[i])
-                document.getElementById(`class${i}`).innerHTML = String(schedule[i].course);
+                document.getElementById(`class${i}`).innerHTML = String(schedule[i]);
             }
 
             for (let i = 0; i < schedule.length; i++) {
                 // document.getElementById(`class${i}`).innerHTML = String(schedule[i].course);
                 const classInfo = schedule[i];
-                const [startHour, startMinute] = classInfo.start.split(':').map(Number);
-                const [endHour, endMinute] = classInfo.end.split(':').map(Number);
+                const [startHour, startMinute] = timeTable[i].start.split(':').map(Number);
+                const [endHour, endMinute] = timeTable[i].end.split(':').map(Number);
                 const startTimeInSeconds = startHour * 3600 + startMinute * 60;
                 const endTimeInSeconds = endHour * 3600 + endMinute * 60;
 

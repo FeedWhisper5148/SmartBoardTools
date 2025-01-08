@@ -22,7 +22,8 @@ let aiWindow
 // 判断数据文件是否存在，若不存在则创建默认的数据文件
 function writeDefalutData() {
     if (!fs.existsSync(filePath)) {
-        fs.writeFileSync(filePath, '{"wordListIndex":0,"wordMeaning":"","wordLastUpdate":"2024-01-01","countDownDays":"2025-03-24T00:00:00","classSchedule":[[{"start":"8:00","end":"8:40","course":"生"},{"start":"8:50","end":"9:30","course":"地"},{"start":"10:00","end":"10:40","course":"语"},{"start":"10:50","end":"11:30","course":"体"},{"start":"14:00","end":"14:40","course":"物"},{"start":"14:50","end":"15:30","course":"数"},{"start":"15:40","end":"16:20","course":"英"},{"start":"16:30","end":"17:10","course":"化"},{"start":"18:40","end":"19:50","course":"英"},{"start":"20:00","end":"21:10","course":"语"},{"start":"21:20","end":"10:30","course":"自"}],[{"start":"8:00","end":"8:40","course":"物"},{"start":"8:50","end":"9:30","course":"英"},{"start":"10:00","end":"10:40","course":"数"},{"start":"10:50","end":"11:30","course":"数"},{"start":"14:00","end":"14:40","course":"物"},{"start":"14:50","end":"15:30","course":"化"},{"start":"15:40","end":"16:20","course":"生"},{"start":"16:30","end":"17:10","course":"物"},{"start":"18:40","end":"19:50","course":"物"},{"start":"20:00","end":"21:10","course":"物"},{"start":"21:20","end":"10:30","course":"物"}],[{"start":"8:00","end":"8:40","course":"语"},{"start":"8:50","end":"9:30","course":"化"},{"start":"10:00","end":"10:40","course":"数"},{"start":"10:50","end":"11:30","course":"信"},{"start":"14:00","end":"14:40","course":"英"},{"start":"14:50","end":"15:30","course":"英"},{"start":"15:40","end":"16:20","course":"生"},{"start":"16:30","end":"17:10","course":"物"},{"start":"18:40","end":"19:50","course":"自"},{"start":"20:00","end":"21:10","course":"自"},{"start":"21:20","end":"10:30","course":"自"}],[{"start":"8:00","end":"8:40","course":"数"},{"start":"8:50","end":"9:30","course":"化"},{"start":"10:00","end":"10:40","course":"物"},{"start":"10:50","end":"11:30","course":"英"},{"start":"14:00","end":"14:40","course":"英"},{"start":"14:50","end":"15:30","course":"英"},{"start":"15:40","end":"16:20","course":"英"},{"start":"16:30","end":"17:10","course":"物"},{"start":"18:40","end":"19:50","course":"物"},{"start":"20:00","end":"21:10","course":"物"},{"start":"21:20","end":"10:30","course":"物"}],[{"start":"8:00","end":"8:40","course":"英"},{"start":"8:50","end":"9:30","course":"英"},{"start":"10:00","end":"10:40","course":"英"},{"start":"10:50","end":"11:30","course":"英"},{"start":"14:00","end":"14:40","course":"英"},{"start":"14:50","end":"15:30","course":"英"},{"start":"15:40","end":"16:20","course":"英"},{"start":"16:30","end":"17:10","course":"英"},{"start":"18:40","end":"19:50","course":"生"},{"start":"20:00","end":"21:10","course":"物"},{"start":"21:20","end":"10:30","course":"物"}],[{"start":"8:00","end":"8:40","course":"英"},{"start":"8:50","end":"9:30","course":"化"},{"start":"10:00","end":"10:40","course":"英"},{"start":"10:50","end":"11:30","course":"数"},{"start":"14:00","end":"14:40","course":"物"},{"start":"14:50","end":"15:30","course":"语"},{"start":"15:40","end":"16:20","course":"物"},{"start":"16:30","end":"17:10","course":"物"},{"start":"18:40","end":"19:50","course":"语"},{"start":"20:00","end":"20:25","course":"物"},{"start":"21:20","end":"10:30","course":"数"}],[{"start":"8:00","end":"8:40","course":"英"},{"start":"8:50","end":"9:30","course":"化"},{"start":"10:00","end":"10:40","course":"英"},{"start":"10:50","end":"11:30","course":"数"},{"start":"14:00","end":"14:40","course":"物"},{"start":"14:50","end":"15:30","course":"语"},{"start":"15:40","end":"16:20","course":"物"},{"start":"16:30","end":"17:10","course":"物"},{"start":"18:40","end":"19:50","course":"语"},{"start":"20:00","end":"20:25","course":"物"},{"start":"21:20","end":"10:30","course":"数"}]]}', 'utf8')
+        const defalutData = fs.readFileSync(path.join(__dirname, './config.json'))
+        fs.writeFileSync(filePath, defalutData)
         console.log(`File ${filePath} created.`)
         // console.log(objData)
     } else {
@@ -315,6 +316,27 @@ function createAiWindow() {
     aiWindow.center()
 }
 
+function creatEditTimeTableWindow() {
+    const editTimeTable = new BrowserWindow({
+        width: 400,
+        height: 500,
+        autoHideMenuBar: false,
+        alwaysOnTop: false,
+        frame: true,
+        transparent: false,
+        skipTaskbar: false,
+        icon: path.resolve(__dirname, './favicon.ico'),
+        webPreferences: {
+            nodeIntegration: true,
+            sandbox: false,
+            preload: path.resolve(__dirname, './preload.js')
+        }
+    })
+
+    editTimeTable.loadFile('./pages/EditTimeTable.html')
+    editTimeTable.center()
+}
+
 
 app.on('ready', () => {
     // 创建课程表窗口
@@ -325,6 +347,9 @@ app.on('ready', () => {
 
     // 创建每日一词窗口
     creatMemoriseWindow()
+
+    // 创建修改时间表窗口
+    creatEditTimeTableWindow()
 
     ipcMain.on('creatAiWindow', () => {
         createAiWindow()
@@ -401,7 +426,7 @@ app.on('ready', () => {
 
     ipcMain.on('showEditWindow', () => {
 
-        // 创建编辑课程表窗口
+        // 创建修改课程表窗口
         creatEditWindow()
 
         // 编辑课程表

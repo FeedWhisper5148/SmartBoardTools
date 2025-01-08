@@ -26,9 +26,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             currentSchedule = ''
             for (let dayIndex = 0; dayIndex < classSchedule.length; dayIndex++) {
                 for (let courseIndex = 0; courseIndex < classSchedule[dayIndex].length; courseIndex++) {
-                    currentSchedule += classSchedule[dayIndex][courseIndex].course
+                    // currentSchedule += classSchedule[dayIndex][courseIndex]
                     console.log(`${dayWordIndex[dayIndex]}${courseIndex}`)
-                    document.getElementById(`${dayWordIndex[dayIndex]}${courseIndex}`).innerHTML = classSchedule[dayIndex][courseIndex].course
+                    document.getElementById(`${dayWordIndex[dayIndex]}${courseIndex}`).innerHTML = classSchedule[dayIndex][courseIndex]
                 }
                 currentSchedule += '<br><br>'
             }
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             if (courseInput.value.length == 1) {
-                data.classSchedule[formatedWeek][formatedIndex].course = courseInput.value
+                data.classSchedule[formatedWeek][formatedIndex] = courseInput.value
                 console.log(data)
                 electronAPI.editClassSchedule(data)
                 

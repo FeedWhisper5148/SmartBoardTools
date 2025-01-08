@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const meaning = await window.electronAPI.getWordMeaning()
     const data = await window.electronAPI.fetchData()
     const classSchedule = data.classSchedule
+    const timeTable = data.timeTable
     // console.log(data)
 
     wordArea.innerText = word
@@ -22,8 +23,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const currentTimeInSeconds = currentHour * 3600 + currentMinute * 60 + currentSecond
         for (i = 0; i < todaySchedule.length; i++) {
             let classInfo = todaySchedule[i]
-            const [startHour, startMinute] = classInfo.start.split(':').map(Number)
-            const [endHour, endMinute] = classInfo.end.split(':').map(Number)
+            const [startHour, startMinute] = timeTable[i].start.split(':').map(Number)
+            const [endHour, endMinute] = timeTable[i].end.split(':').map(Number)
             const startTimeInSeconds = startHour * 3600 + startMinute * 60;
             const endTimeInSeconds = endHour * 3600 + endMinute * 60
             // 判断当前是否为上课时间，如果是，就隐藏窗口
