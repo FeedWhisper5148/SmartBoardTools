@@ -254,7 +254,7 @@ function creatEditWindow() {
     editClassSchedule = new BrowserWindow({
         width: 580,
         height: 700,
-        autoHideMenuBar: true,
+        autoHideMenuBar: false,
         icon: path.resolve(__dirname, './favicon.ico'),
         webPreferences: {
             webSecurity: false,

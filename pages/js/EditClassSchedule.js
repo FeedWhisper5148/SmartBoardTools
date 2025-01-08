@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const indexInput = document.getElementById('index')
         const courseInput = document.getElementById('course')
         const submitButton = document.getElementById('confirm')
+        const dayWordIndex = ['sun', 'mon', 'tues', 'wed', 'thur', 'fri', 'sat']
         const regexWeek = /[1-7]/;
         const regexIndex = /^(1[0-1]|[1-9])$/
         let currentSchedule = ''; // 声明并初始化变量
@@ -26,13 +27,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             for (let dayIndex = 0; dayIndex < classSchedule.length; dayIndex++) {
                 for (let courseIndex = 0; courseIndex < classSchedule[dayIndex].length; courseIndex++) {
                     currentSchedule += classSchedule[dayIndex][courseIndex].course
+                    console.log(`${dayWordIndex[dayIndex]}${courseIndex}`)
+                    document.getElementById(`${dayWordIndex[dayIndex]}${courseIndex}`).innerHTML = classSchedule[dayIndex][courseIndex].course
                 }
                 currentSchedule += '<br><br>'
             }
 
             // console.log(currentSchedule)
             console.log(classSchedule)
-            currentScheduleContent.innerHTML = currentSchedule
+            // currentScheduleContent.innerHTML = currentSchedule
             currentScheduleContent.setAttribute('class', 'content')
         }
 
@@ -60,11 +63,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                 data.classSchedule[formatedWeek][formatedIndex].course = courseInput.value
                 console.log(data)
                 electronAPI.editClassSchedule(data)
+                
+                if (Number(indexInput.value) < 11) {
+                    indexInput.value = Number(indexInput.value) + 1
+                    courseInput.value = ''
+                } else {
+                    indexInput.value = 1
+                    weekInpuut.value = Number(weekInpuut.value) + 1
+                    courseInput.value = ''
+                }
+
                 layui.layer.msg('修改成功')
                 // alert('修改成功，重启APP后生效')
             } else {
-                alert('课程名称应输入一个汉字')
-                layui.layer, msg('课程名称应输入一个汉字')
+                // alert('课程名称应输入一个汉字')
+                layui.layer.msg('课程名称应输入一个汉字')
             }
         })
 

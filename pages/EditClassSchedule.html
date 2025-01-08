@@ -18,15 +18,146 @@
 <body>
   <div class="title">当前课程表</div>
   <div id="currentClassSchedule">
-    <!-- <div id="0"></div>
-        <div id="1"></div>
-        <div id="2"></div>
-        <div id="3"></div>
-        <div id="4"></div>
-        <div id="5"></div>
-        <div id="6"></div> -->
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Demo</title>
+      <!-- 请勿在项目正式环境中引用该 layui.css 地址 -->
+      <link href="//unpkg.com/layui@2.9.21/dist/css/layui.css" rel="stylesheet">
+    </head>
+
+    <body>
+      <!-- <p>默认风格:</p> -->
+      <table class="layui-table" id="currentClassSchedule">
+        <!-- <colgroup>
+          <col width="60">
+          <col width="60">
+          <col>
+        </colgroup> -->
+        <thead>
+          <tr>
+            <th></th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>5</th>
+            <th>6</th>
+            <th>7</th>
+            <th>8</th>
+            <th>9</th>
+            <th>10</th>
+            <th>11</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>周日</td>
+            <td id="sun0"></td>
+            <td id="sun1"></td>
+            <td id="sun2"></td>
+            <td id="sun3"></td>
+            <td id="sun4"></td>
+            <td id="sun5"></td>
+            <td id="sun6"></td>
+            <td id="sun7"></td>
+            <td id="sun8"></td>
+            <td id="sun9"></td>
+            <td id="sun10"></td>
+          </tr>
+          <tr>
+            <td>周一</td>
+            <td id="mon0"></td>
+            <td id="mon1"></td>
+            <td id="mon2"></td>
+            <td id="mon3"></td>
+            <td id="mon4"></td>
+            <td id="mon5"></td>
+            <td id="mon6"></td>
+            <td id="mon7"></td>
+            <td id="mon8"></td>
+            <td id="mon9"></td>
+            <td id="mon10"></td>
+          </tr>
+          <tr>
+            <td>周二</td>
+            <td id="tues0"></td>
+            <td id="tues1"></td>
+            <td id="tues2"></td>
+            <td id="tues3"></td>
+            <td id="tues4"></td>
+            <td id="tues5"></td>
+            <td id="tues6"></td>
+            <td id="tues7"></td>
+            <td id="tues8"></td>
+            <td id="tues9"></td>
+            <td id="tues10"></td>
+          </tr>
+          <tr>
+            <td>周三</td>
+            <td id="wed0"></td>
+            <td id="wed1"></td>
+            <td id="wed2"></td>
+            <td id="wed3"></td>
+            <td id="wed4"></td>
+            <td id="wed5"></td>
+            <td id="wed6"></td>
+            <td id="wed7"></td>
+            <td id="wed8"></td>
+            <td id="wed9"></td>
+            <td id="wed10"></td>
+          </tr>
+          <tr>
+            <td>周四</td>
+            <td id="thur0"></td>
+            <td id="thur1"></td>
+            <td id="thur2"></td>
+            <td id="thur3"></td>
+            <td id="thur4"></td>
+            <td id="thur5"></td>
+            <td id="thur6"></td>
+            <td id="thur7"></td>
+            <td id="thur8"></td>
+            <td id="thur9"></td>
+            <td id="thur10"></td>
+          </tr>
+          <tr>
+            <td>周五</td>
+            <td id="fri0"></td>
+            <td id="fri1"></td>
+            <td id="fri2"></td>
+            <td id="fri3"></td>
+            <td id="fri4"></td>
+            <td id="fri5"></td>
+            <td id="fri6"></td>
+            <td id="fri7"></td>
+            <td id="fri8"></td>
+            <td id="fri9"></td>
+            <td id="fri10"></td>
+          </tr>
+          <tr>
+            <td>周六</td>
+            <td id="sat0"></td>
+            <td id="sat1"></td>
+            <td id="sat2"></td>
+            <td id="sat3"></td>
+            <td id="sat4"></td>
+            <td id="sat5"></td>
+            <td id="sat6"></td>
+            <td id="sat7"></td>
+            <td id="sat8"></td>
+            <td id="sat9"></td>
+            <td id="sat10"></td>
+          </tr>
+        </tbody>
+      </table>
+    </body>
+    </html>
   </div>
-  <div class="tip">提示：第一行为周日，最后一行为周六</div>
+  <!-- <div class="tip">提示：第一行为周日，最后一行为周六</div> -->
   <div class="title">修改课程表</div>
   <form class="layui-form" action="">
     <div class="layui-form-item">
@@ -45,7 +176,7 @@
       <button class=layui-btn id="confirm" onclick="handleFormSubmit(event)">确定</button>
     </div>
   </form>
-    <div class="tip">注：重启后生效</div>
+  <!-- <div class="tip">注：重启后生效</div> -->
 </body>
 
 <script src="./layui/layui.js"></script>
