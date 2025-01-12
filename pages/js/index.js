@@ -2,6 +2,7 @@ const countDownDayInput = document.getElementById('countDownDayInput')
 const countDownDayButton = document.getElementById('countDownDayButton')
 const quitButton = document.getElementById('quit')
 const editButton = document.getElementById('editClassScheduleButton')
+const editTimeTableButton = document.getElementById('editTimeTableButton')
 const aiButton = document.getElementById('aiButton')
 const classScheduleSwitch = document.getElementById('classScheduleSwitch')
 const memoriseWordSwitch = document.getElementById('memoriseWordSwitch')
@@ -10,26 +11,23 @@ const reg = /^\d{8}$/
 
 layui.use(function () {
     var form = layui.form;
-    var layer = layui.layer;
     // checkbox 事件
     form.on('switch(classScheduleSwitch)', function (data) {
         let elem = data.elem
         let checked = elem.checked
-        let value = elem.value
-        let othis = data.othis
         if (checked == true) {
-            electronAPI.showClassScheduleWindow()
+            electronAPI.showWindow('ClassSchedule')
         } else {
-            electronAPI.hideClassScheduleWindow()
+            electronAPI.hideWindow('ClassSchedule')
         }
     }), 
     form.on('switch(memoriseSwitch)', (data) => {
         let elem = data.elem
         let checked = elem.checked
         if (checked == true) {
-            electronAPI.showMemoriseWindow()
+            electronAPI.showWindow('Memorise')
         } else {
-            electronAPI.hideMemoriseWindow()
+            electronAPI.hideWindow('Memorise')
         }
     })
 })
@@ -50,11 +48,15 @@ quitButton.addEventListener('click', () => {
 })
 
 editButton.addEventListener('click', () => {
-    electronAPI.showEditWindow()
+    electronAPI.showWindow('Edit')
+})
+
+editTimeTableButton.addEventListener('click', () => {
+    electronAPI.showWindow('EditTimeTable')
 })
 
 aiButton.addEventListener('click', () => {
-    electronAPI.creatAiWindow()
+    electronAPI.showWindow('Ai')
 })
 
 // layui.form.on('click(classScheduleSwitch)', returnData)

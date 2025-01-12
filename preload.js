@@ -1,5 +1,4 @@
 const { contextBridge, ipcRenderer } = require('electron')
-const fs = require('fs')
 const { console } = require('inspector')
 // let receivedData
 // const jsonData = fs.readFileSync('./config.json')
@@ -50,9 +49,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     quitApp: () => {
         ipcRenderer.send('quitApp')
     },
-    showEditWindow: () => {
-        ipcRenderer.send('showEditWindow')
-    },
     editClassSchedule: (data) => {
         ipcRenderer.send('editClassSchedule', data)
     },
@@ -75,35 +71,24 @@ contextBridge.exposeInMainWorld('electronAPI', {
             throw error; // 将错误抛出给调用者
         }
     },
-    showClassScheduleWindow: () => {
-        ipcRenderer.send('showClassScheduleWindow')
-    },
-    hideClassScheduleWindow: () => {
-        ipcRenderer.send('hideClassScheduleWindow')
-    },
-    showMemoriseWindow: () => {
-        ipcRenderer.send('showMemoriseWindow')
-    },
-    hideMemoriseWindow: () => {
-        ipcRenderer.send('hideMemoriseWindow')
-    },
     creatAiWindow: () => {
         ipcRenderer.send('creatAiWindow')
     },
     getUserSend: (data) => {
         ipcRenderer.send('userSend', data)
     },
-    getAiResult: () => {
-        ipcRenderer.on('aiResult', (event, data) => {
-            return data
-        })
-    },
     receive: (channel, func) => {
-        // 监听来自主进程的回复
         ipcRenderer.on(channel, (event, args) => func(args));
     },
-    // onDataChunk: (callback) => ipcRenderer.on('data-chunk', callback),
     editTimeTable: (data) => {
         ipcRenderer.send('editTimeTable', data)
+    },
+
+    // 显示或隐藏窗口
+    showWindow: (window) => {
+        ipcRenderer.send(`show${window}Window`)
+    },
+    hideWindow: (window) => {
+        ipcRenderer.send(`hide${window}Window`)
     }
 })

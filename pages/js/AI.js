@@ -8,7 +8,6 @@ sendButton.addEventListener('click', () => {
     resultArea.innerHTML = ''
     const userSendContent = userSend.value
     electronAPI.getUserSend(userSendContent)
-    // console.log(electronAPI.getAiResult())
     window.electronAPI.receive('aiResult', (reply) => {
         console.log(reply)
         resultArea.innerHTML += reply.choices[0].message.content

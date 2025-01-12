@@ -349,10 +349,7 @@ app.on('ready', () => {
     // 创建每日一词窗口
     creatMemoriseWindow()
 
-    // 创建修改时间表窗口
-    creatEditTimeTableWindow()
-
-    ipcMain.on('creatAiWindow', () => {
+    ipcMain.on('showAiWindow', () => {
         createAiWindow()
     })
 
@@ -370,12 +367,12 @@ app.on('ready', () => {
     ipcMain.on('countDownDayInput', (event, data) => {
         // 接收渲染进程发送的数据
         console.log('Data received in main process:', data)
-     
+
         let formatData = updateCountDownDays(event, data)
-     
+
         // 然后将更新后的数据发送回渲染进程
         classSchedule.webContents.send('changedCountDownDays', formatData);
-      })
+    })
 
     // console.log(objData)
     ipcMain.handle('fetchDataRequest', async (event) => {
@@ -455,6 +452,10 @@ app.on('ready', () => {
         const jsonData = JSON.stringify(objData)
         fs.writeFileSync(filePath, jsonData)
         editTimeTable.webContents.send('changedTimeTable', data)
+    })
+
+    ipcMain.on('showEditTimeTableWindow', () => {
+        creatEditTimeTableWindow()
     })
 
 
