@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Loading...</title>
+    <style>
+        .centered-rotating-element {
+            width: 50px;
+            position: absolute;
+            /* 使元素绝对定位 */
+            top: 50%;
+            /* 放置在容器的垂直中心 */
+            left: 50%;
+            /* 放置在容器的水平中心 */
+            transform: translate(-50%, -50%) rotate(0deg);
+            /* 使用transform居中并初始化旋转 */
+            animation: rotate 2s linear infinite;
+            /* 应用无限循环的旋转动画 */
+        }
+
+        @keyframes rotate {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <img src="./resource/loading.png" alt="loading..." class="centered-rotating-element">
+</body>
+
+</html>

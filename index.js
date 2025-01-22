@@ -13,6 +13,7 @@ const userFile = app.getPath('userData')
 const filePath = path.join(userFile, 'SmartBoardTools.json')
 const wordListPath = path.join(userFile, 'wordList.json')
 
+let loading
 let classSchedule
 let index
 let memoriseWords
@@ -45,7 +46,7 @@ function updateCountDownDays(event, data) {
     let year = data.substring(0, 4)
     let month = data.substring(4, 6)
     let day = data.substring(6, 8)
-    formatData = year + '-' + month + '-' + day + 'T00:00:00'
+    formatData = year + '-' + month + '-' + day + 'T23:59:59'
     const rawData = fs.readFileSync(filePath)
     const jsonData = JSON.parse(rawData)
     jsonData.countDownDays = formatData
@@ -202,7 +203,7 @@ function creatIndexWindow() {
     index = new BrowserWindow({
         width: 600,
         height: 450,
-        autoHideMenuBar: false,
+        autoHideMenuBar: true,
         icon: path.resolve(__dirname, './favicon.ico'),
         webPreferences: {
             webSecurity: false,
@@ -210,7 +211,7 @@ function creatIndexWindow() {
             nodeIntegration: true,
             preload: path.resolve(__dirname, './preload.js')
         },
-        // show:false
+        show: false
     })
 
     index.loadFile('./pages/index.html')
@@ -234,7 +235,8 @@ function creatClassScheduleWindow() {
             nodeIntegration: true,
             sandbox: false,
             preload: path.resolve(__dirname, './preload.js')
-        }
+        },
+        show: false
     })
 
     // 获取屏幕的尺寸
@@ -256,7 +258,7 @@ function creatEditWindow() {
     editClassSchedule = new BrowserWindow({
         width: 580,
         height: 700,
-        autoHideMenuBar: false,
+        autoHideMenuBar: true,
         icon: path.resolve(__dirname, './favicon.ico'),
         webPreferences: {
             webSecurity: false,
@@ -264,7 +266,7 @@ function creatEditWindow() {
             nodeIntegration: true,
             preload: path.resolve(__dirname, './preload.js')
         },
-        // show:false
+        show: false
     })
     editClassSchedule.loadFile('./pages/EditClassSchedule.html')
     editClassSchedule.center()
@@ -283,7 +285,8 @@ function creatMemoriseWindow() {
             nodeIntegration: true,
             sandbox: false,
             preload: path.resolve(__dirname, './preload.js')
-        }
+        },
+        show: false
     })
 
     const screenSize = screen.getPrimaryDisplay().workAreaSize;
@@ -300,7 +303,7 @@ function createAiWindow() {
     aiWindow = new BrowserWindow({
         width: 415,
         height: 570,
-        autoHideMenuBar: false,
+        autoHideMenuBar: true,
         alwaysOnTop: false,
         frame: true,
         transparent: false,
@@ -310,7 +313,9 @@ function createAiWindow() {
             nodeIntegration: true,
             sandbox: false,
             preload: path.resolve(__dirname, './preload.js')
-        }
+        },
+        show: false
+
     })
 
     aiWindow.loadFile('./pages/AI.html')
@@ -321,7 +326,7 @@ function creatEditTimeTableWindow() {
     editTimeTable = new BrowserWindow({
         width: 400,
         height: 750,
-        autoHideMenuBar: false,
+        autoHideMenuBar: true,
         alwaysOnTop: false,
         frame: true,
         transparent: false,
@@ -331,15 +336,39 @@ function creatEditTimeTableWindow() {
             nodeIntegration: true,
             sandbox: false,
             preload: path.resolve(__dirname, './preload.js')
-        }
+        },
+        show: false
     })
 
     editTimeTable.loadFile('./pages/EditTimeTable.html')
     editTimeTable.center()
 }
 
+function creatLoadingWindow() {
+    loading = new BrowserWindow({
+        width: 600,
+        height: 450,
+        autoHideMenuBar: true,
+        alwaysOnTop: false,
+        frame: true,
+        transparent: false,
+        skipTaskbar: false,
+        icon: path.resolve(__dirname, './favicon.ico'),
+        webPreferences: {
+            nodeIntegration: true,
+            sandbox: false,
+            preload: path.resolve(__dirname, './preload.js')
+        },
+        // show: false,
+    })
+    loading.loadFile('./pages/loading.html')
+}
+
 
 app.on('ready', () => {
+
+    creatLoadingWindow()
+
     // 创建课程表窗口
     creatClassScheduleWindow()
 
@@ -349,8 +378,21 @@ app.on('ready', () => {
     // 创建每日一词窗口
     creatMemoriseWindow()
 
+    creatEditWindow()
+
+    creatEditTimeTableWindow()
+
+    createAiWindow()
+
+    classSchedule.on('ready-to-show', () => {
+        loading.close()
+        classSchedule.show()
+        index.show()
+        memoriseWords.show()
+    })
+
     ipcMain.on('showAiWindow', () => {
-        createAiWindow()
+        aiWindow.show()
     })
 
     ipcMain.on('userSend', (event, data) => {
@@ -398,7 +440,7 @@ app.on('ready', () => {
     })
 
     ipcMain.on('showIndexWindow', () => {
-        creatIndexWindow()
+        index.show()
     })
 
     ipcMain.on('showEditWindow', () => {
@@ -425,7 +467,7 @@ app.on('ready', () => {
     ipcMain.on('showEditWindow', () => {
 
         // 创建修改课程表窗口
-        creatEditWindow()
+        editClassSchedule.show()
 
         // 编辑课程表
         ipcMain.on('editClassSchedule', (event, data) => {
@@ -455,7 +497,7 @@ app.on('ready', () => {
     })
 
     ipcMain.on('showEditTimeTableWindow', () => {
-        creatEditTimeTableWindow()
+        editTimeTable.show()
     })
 
 
@@ -479,7 +521,7 @@ app.on('ready', () => {
     const tray = new Tray(trayIconPath);
     tray.setToolTip('智慧白板助手')
     const contextMenu = Menu.buildFromTemplate([
-        { label: '显示主界面', click: () => { creatIndexWindow() } },
+        { label: '显示主界面', click: () => { index.show() } },
         { label: '退出', click: () => { app.quit(); } },
     ])
     tray.setContextMenu(contextMenu)
