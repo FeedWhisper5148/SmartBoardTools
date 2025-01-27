@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const data = await window.electronAPI.fetchData();
+    const data = await window.electronAPI.fetchData()
     let timeTable = data.timeTable
     const indexInput = document.getElementById('index')
     const startInput = document.getElementById('start')
     const endInput = document.getElementById('end')
     const editButton = document.getElementById('btn')
     const index = [0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    const timeRegex = /^[01]\d:[0-5]\d$/
+    const timeRegex = /^([01]?[0-9]|2[0-3]):([0-5]?[0-9])$/
 
     function showTimeTable() {
         for (let i = 0; i < timeTable.length; i++) {
@@ -16,19 +16,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     showTimeTable()
-    
+
     electronAPI.receive('changedTimeTable', (data) => {
         timeTable = data
         showTimeTable()
     })
 
     editButton.addEventListener('click', () => {
+        alert(timeRegex.test(startInput.value))
+        if (timeRegex.test(startInput.value) && timeRegex.test(endInput.value)) {
             let formatedIndex = index[Number(indexInput.value)]
-            // console.log(formatedIndex)
-            // console.log(startInput.value)
             timeTable[formatedIndex].start = startInput.value
             timeTable[formatedIndex].end = endInput.value
             electronAPI.editTimeTable(timeTable)
-            // location.reload()
+            layer.msg('修改成功')
+        } else {
+            layer.msg('格式不正确')
+        }
     })
 })

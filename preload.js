@@ -1,25 +1,14 @@
 const { contextBridge, ipcRenderer } = require('electron')
 const { console } = require('inspector')
-// let receivedData
-// const jsonData = fs.readFileSync('./config.json')
-// objData = JSON.parse(jsonData)
-// console.log(objData.countDownDays)
-// ipcRenderer.on('data', getData)
-
-// function getData (event, data) {
-//     console.log(data)
-//     receivedData = data
-// }
-// console.log(receivedData)
 
 contextBridge.exposeInMainWorld('electronAPI', {
     async fetchData() {
         try {
-            const data = await ipcRenderer.invoke('fetchDataRequest');
-            return data; // 将数据返回给调用者
+            const data = await ipcRenderer.invoke('fetchDataRequest')
+            return data
         } catch (error) {
-            console.error('Error fetching data:', error);
-            throw error; // 将错误抛出给调用者
+            console.error('Error fetching data:', error)
+            throw error
         }
     },
     updateCountDownDays: (date) => {
@@ -39,11 +28,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
     async getCountDays() {
         try {
-            const data = await ipcRenderer.invoke('getData');
-            return data; // 将数据返回给调用者
+            const data = await ipcRenderer.invoke('getData')
+            return data
         } catch (error) {
-            console.error('Error fetching data:', error);
-            throw error; // 将错误抛出给调用者
+            console.error('Error fetching data:', error)
+            throw error
         }
     },
     quitApp: () => {
@@ -52,23 +41,22 @@ contextBridge.exposeInMainWorld('electronAPI', {
     editClassSchedule: (data) => {
         ipcRenderer.send('editClassSchedule', data)
     },
-    // alert(date)
     async getWord() {
         try {
-            const data = await ipcRenderer.invoke('word');
-            return data; // 将数据返回给调用者
+            const data = await ipcRenderer.invoke('word')
+            return data
         } catch (error) {
-            console.error('Error fetching data:', error);
-            throw error; // 将错误抛出给调用者
+            console.error('Error fetching data:', error)
+            throw error
         }
     },
     async getWordMeaning() {
         try {
-            const data = await ipcRenderer.invoke('meaning');
-            return data; // 将数据返回给调用者
+            const data = await ipcRenderer.invoke('meaning')
+            return data
         } catch (error) {
-            console.error('Error fetching data:', error);
-            throw error; // 将错误抛出给调用者
+            console.error('Error fetching data:', error)
+            throw error
         }
     },
     creatAiWindow: () => {
@@ -78,7 +66,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
         ipcRenderer.send('userSend', data)
     },
     receive: (channel, func) => {
-        ipcRenderer.on(channel, (event, args) => func(args));
+        ipcRenderer.on(channel, (event, args) => func(args))
     },
     editTimeTable: (data) => {
         ipcRenderer.send('editTimeTable', data)

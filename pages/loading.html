@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <title>Loading...</title>
     <style>
-        .centered-rotating-element {
-            width: 50px;
+        svg {
+            /* width: 600px; */
             position: absolute;
             /* 使元素绝对定位 */
             top: 50%;
@@ -14,25 +14,37 @@
             left: 50%;
             /* 放置在容器的水平中心 */
             transform: translate(-50%, -50%) rotate(0deg);
-            /* 使用transform居中并初始化旋转 */
-            animation: rotate 2s linear infinite;
-            /* 应用无限循环的旋转动画 */
         }
 
-        @keyframes rotate {
-            from {
-                transform: translate(-50%, -50%) rotate(0deg);
-            }
-
-            to {
-                transform: translate(-50%, -50%) rotate(360deg);
-            }
+        svg path,
+        svg rect {
+            fill: #5FB8788E;
         }
     </style>
 </head>
 
 <body>
-    <img src="./resource/loading.png" alt="loading..." class="centered-rotating-element">
+    <div class="loader loader--style7">
+        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+           width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+          <rect x="0" y="0" width="4" height="20" fill="#333">
+            <animate attributeName="opacity" attributeType="XML"
+              values="1; .2; 1" 
+              begin="0s" dur="0.6s" repeatCount="indefinite" />
+          </rect>
+          <rect x="7" y="0" width="4" height="20" fill="#333">
+            <animate attributeName="opacity" attributeType="XML"
+              values="1; .2; 1" 
+              begin="0.2s" dur="0.6s" repeatCount="indefinite" />
+          </rect>
+          <rect x="14" y="0" width="4" height="20" fill="#333">
+            <animate attributeName="opacity" attributeType="XML"
+              values="1; .2; 1" 
+              begin="0.4s" dur="0.6s" repeatCount="indefinite" />
+          </rect>
+        </svg>
+        <div>加载中，可能需要30秒</div>
+      </div>      
 </body>
 
 </html>

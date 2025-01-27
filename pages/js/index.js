@@ -8,10 +8,9 @@ const classScheduleSwitch = document.getElementById('classScheduleSwitch')
 const memoriseWordSwitch = document.getElementById('memoriseWordSwitch')
 const reg = /^\d{8}$/
 
-
+// 开启或关闭功能
 layui.use(function () {
-    var form = layui.form;
-    // checkbox 事件
+    var form = layui.form
     form.on('switch(classScheduleSwitch)', function (data) {
         let elem = data.elem
         let checked = elem.checked
@@ -32,6 +31,7 @@ layui.use(function () {
     })
 })
 
+// 修改倒数日
 countDownDayButton.addEventListener('click', () => {
     const date = countDownDayInput.value
     if (reg.test(date)) {
@@ -40,9 +40,9 @@ countDownDayButton.addEventListener('click', () => {
     } else {
         layer.msg('请输入有效的日期')
     }
-    // alert(date)
 })
 
+// 页面上的按钮
 quitButton.addEventListener('click', () => {
     electronAPI.quitApp()
 })
@@ -58,9 +58,6 @@ editTimeTableButton.addEventListener('click', () => {
 aiButton.addEventListener('click', () => {
     electronAPI.showWindow('Ai')
 })
-
-// layui.form.on('click(classScheduleSwitch)', returnData)
-// // setInterval(updateClassScheduleState, 1000)
 
 
 

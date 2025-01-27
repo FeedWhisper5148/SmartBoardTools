@@ -27,7 +27,6 @@ function writeDefalutData() {
         const defalutData = fs.readFileSync(path.join(__dirname, './config.json'))
         fs.writeFileSync(filePath, defalutData)
         console.log(`File ${filePath} created.`)
-        // console.log(objData)
     } else {
         console.log(`File ${filePath} already exists.`);
     }
@@ -37,9 +36,11 @@ function writeDefalutData() {
     }
 }
 
-writeDefalutData()
 const wordList = fs.readFileSync(wordListPath)
 const wordListObj = JSON.parse(wordList)
+
+const rawData = fs.readFileSync(filePath)
+const jsonData = JSON.parse(rawData)
 
 // 修改倒数日
 function updateCountDownDays(event, data) {
@@ -53,11 +54,6 @@ function updateCountDownDays(event, data) {
     const modifiedData = JSON.stringify(jsonData)
     fs.writeFileSync(filePath, modifiedData)
     return formatData
-    // console.log(formatData)
-    // ipcMain.handle('getCountDownDays', async (event) => {
-    //     const data = formatData;
-    //     return data; // 将数据返回给渲染进程
-    // });
 }
 
 let currentWord = ''
@@ -95,16 +91,16 @@ function translate() {
     const fromLang = 'auto'
     const toLang = 'zh-CN'
 
-    const salt = Math.random().toString(36).substr(2, 16);
+    const salt = Math.random().toString(36).substr(2, 16)
 
     // 获取当前UTC时间戳
-    const curtime = Math.floor(Date.now() / 1000);
+    const curtime = Math.floor(Date.now() / 1000)
 
     // 构造签名前的字符串
-    const signStr = `${appId}${textToTranslate}${salt}${curtime}${appSecret}`;
+    const signStr = `${appId}${textToTranslate}${salt}${curtime}${appSecret}`
 
     // 计算签名
-    const sign = crypto.createHash('sha256').update(signStr).digest('hex');
+    const sign = crypto.createHash('sha256').update(signStr).digest('hex')
 
     // 构造请求参数
     const params = {
@@ -119,24 +115,23 @@ function translate() {
     };
 
     // 将参数转换为查询字符串
-    const queryString = querystring.stringify(params);
+    const queryString = querystring.stringify(params)
 
     // 有道翻译API的请求URL
-    const apiUrl = `https://openapi.youdao.com/api?${queryString}`;
+    const apiUrl = `https://openapi.youdao.com/api?${queryString}`
 
     const rawData = fs.readFileSync(filePath).toString()
-    // console.log(rawData)
     const objData = JSON.parse(rawData)
 
     // 判断是否需要更新翻译
     if (new Date().toISOString().substring(0, 10) != objData.wordLastUpdate) {
         // 发送HTTPS GET请求
         https.get(apiUrl, (res) => {
-            let data = '';
+            let data = ''
 
             res.on('data', (chunk) => {
                 data += chunk;
-            });
+            })
 
             res.on('end', () => {
                 try {
@@ -153,14 +148,16 @@ function translate() {
             });
         }).on('error', (error) => {
             console.error('Error fetching translation:', error)
-        });
+        })
     } else {
-        // console.log('no need to update')
+        console.log('no need to update')
     }
 }
 
+
+// 请求AI接口
 function aiModel(message) {
-    const url = 'https://spark-api-open.xf-yun.com/v1/chat/completions';
+    const url = 'https://spark-api-open.xf-yun.com/v1/chat/completions'
     const headers = {
         'Authorization': 'Bearer wDTvhPRoyfDDAuDegQtP:DuEJNTkoCMIrvwhJmojx',
         'Content-Type': 'application/json'
@@ -179,25 +176,22 @@ function aiModel(message) {
 
     return axios.post(url, data, { headers }) // 返回 Promise
         .then(response => {
-            // console.log(response.data);
             return response.data; // 在 Promise 中返回数据
         })
         .catch(error => {
-            console.error('Error:', error);
-            throw error; // 重新抛出错误以便调用者可以处理
+            console.error('Error:', error)
+            throw error // 重新抛出错误以便调用者可以处理
         })
 }
 
-// aiModel()
-// console.log(translate())
 setInterval(getNewWord, 1000)
-setInterval(translate, 5000)
+setInterval(translate, 50000)
 translate()
 
 ipcMain.handle('word', async (event) => {
-    const data = getNewWord();
-    return data; // 将数据返回给渲染进程
-});
+    const data = getNewWord()
+    return data // 将数据返回给渲染进程
+})
 
 function creatIndexWindow() {
     index = new BrowserWindow({
@@ -209,6 +203,7 @@ function creatIndexWindow() {
             webSecurity: false,
             sandbox: false,
             nodeIntegration: true,
+            resizable: false,
             preload: path.resolve(__dirname, './preload.js')
         },
         show: false
@@ -216,7 +211,6 @@ function creatIndexWindow() {
 
     index.loadFile('./pages/index.html')
     index.center()
-
 }
 
 
@@ -231,6 +225,7 @@ function creatClassScheduleWindow() {
         frame: false,
         transparent: true,
         skipTaskbar: true,
+        resizable: false,
         webPreferences: {
             nodeIntegration: true,
             sandbox: false,
@@ -240,7 +235,7 @@ function creatClassScheduleWindow() {
     })
 
     // 获取屏幕的尺寸
-    const screenSize = screen.getPrimaryDisplay().workAreaSize;
+    const screenSize = screen.getPrimaryDisplay().workAreaSize
 
     const winPos = {
         x: (screenSize.width - 1239) / 2,
@@ -248,9 +243,11 @@ function creatClassScheduleWindow() {
     }
 
     // 设置窗口的位置
-    classSchedule.setBounds(winPos);
+    classSchedule.setBounds(winPos)
 
     classSchedule.loadFile('./pages/ClassSchedule.html')
+
+    classSchedule.setIgnoreMouseEvents(true, { forward: true })
 }
 
 
@@ -259,6 +256,7 @@ function creatEditWindow() {
         width: 580,
         height: 700,
         autoHideMenuBar: true,
+        resizable: false,
         icon: path.resolve(__dirname, './favicon.ico'),
         webPreferences: {
             webSecurity: false,
@@ -281,6 +279,7 @@ function creatMemoriseWindow() {
         frame: false,
         transparent: true,
         skipTaskbar: true,
+        resizable: false,
         webPreferences: {
             nodeIntegration: true,
             sandbox: false,
@@ -296,7 +295,8 @@ function creatMemoriseWindow() {
         x: screenSize.width - 300,
         y: (screenSize.height - 150) / 2
     };
-    memoriseWords.setBounds(memorisePos);
+    memoriseWords.setBounds(memorisePos)
+    memoriseWords.setIgnoreMouseEvents(true, { forward: true })
 }
 
 function createAiWindow() {
@@ -308,6 +308,7 @@ function createAiWindow() {
         frame: true,
         transparent: false,
         skipTaskbar: false,
+        resizable: false,
         icon: path.resolve(__dirname, './favicon.ico'),
         webPreferences: {
             nodeIntegration: true,
@@ -331,6 +332,7 @@ function creatEditTimeTableWindow() {
         frame: true,
         transparent: false,
         skipTaskbar: false,
+        resizable: false,
         icon: path.resolve(__dirname, './favicon.ico'),
         webPreferences: {
             nodeIntegration: true,
@@ -352,6 +354,7 @@ function creatLoadingWindow() {
         alwaysOnTop: false,
         frame: true,
         transparent: false,
+        resizable: false,
         skipTaskbar: false,
         icon: path.resolve(__dirname, './favicon.ico'),
         webPreferences: {
@@ -366,7 +369,8 @@ function creatLoadingWindow() {
 
 
 app.on('ready', () => {
-
+    
+    // 创建加载窗口
     creatLoadingWindow()
 
     // 创建课程表窗口
@@ -378,17 +382,53 @@ app.on('ready', () => {
     // 创建每日一词窗口
     creatMemoriseWindow()
 
+    // 创建修改课程表窗口
     creatEditWindow()
 
+    // 创建修改时间表窗口
     creatEditTimeTableWindow()
 
+    // 创建问AI窗口
     createAiWindow()
+
+    // 写入默认数据文件
+    writeDefalutData()
+
+    index.on('close', (event) => {
+        // 阻止窗口默认的关闭行为
+        event.preventDefault();
+        // 隐藏窗口而不是关闭它
+        index.hide();
+    })
+
+    aiWindow.on('close', (event) => {
+        event.preventDefault()
+        aiWindow.hide()
+    })
+
+    classSchedule.on('close', (event) => {
+        event.preventDefault()
+        classSchedule.hide()
+    })
+
+    editClassSchedule.on('close', (event) => {
+        event.preventDefault()
+        editClassSchedule.hide()
+    })
+
 
     classSchedule.on('ready-to-show', () => {
         loading.close()
         classSchedule.show()
         index.show()
         memoriseWords.show()
+    })
+
+    editTimeTable.on('close', (event) => {
+        // 阻止窗口默认的关闭行为
+        event.preventDefault()
+        // 隐藏窗口而不是关闭它
+        editTimeTable.hide()
     })
 
     ipcMain.on('showAiWindow', () => {
@@ -404,8 +444,6 @@ app.on('ready', () => {
         });
     })
 
-    // ipcMain.on('countDownDayInput', updateCountDownDays)
-
     ipcMain.on('countDownDayInput', (event, data) => {
         // 接收渲染进程发送的数据
         console.log('Data received in main process:', data)
@@ -413,14 +451,13 @@ app.on('ready', () => {
         let formatData = updateCountDownDays(event, data)
 
         // 然后将更新后的数据发送回渲染进程
-        classSchedule.webContents.send('changedCountDownDays', formatData);
+        classSchedule.webContents.send('changedCountDownDays', formatData)
     })
 
-    // console.log(objData)
     ipcMain.handle('fetchDataRequest', async (event) => {
         const rawData = fs.readFileSync(filePath)
         const objData = JSON.parse(rawData)
-        return objData; // 将数据返回给渲染进程
+        return objData
     })
 
     ipcMain.on('showClassScheduleWindow', () => {
@@ -443,30 +480,15 @@ app.on('ready', () => {
         index.show()
     })
 
-    ipcMain.on('showEditWindow', () => {
-        // creatEditWindow()
-    })
-
-    // 读取配置文件
-    // const filePath = path.join(__dirname, 'config.json')
-    const rawData = fs.readFileSync(filePath)
-    // console.log(objData)
-    // 更新倒计时天数
-    // function updateCountDownDays(event, date) {
-    //     objData.countDownDays = date
-    //     let jsonData = JSON.stringify(objData)
-    //     fs.writeFileSync(filePath, jsonData)
-    //     // console.log(jsonData)
-    // }
-
     // 退出按钮
     ipcMain.on('quitApp', () => {
-        app.quit();
+        app.exit();
     });
 
     ipcMain.on('showEditWindow', () => {
 
         // 创建修改课程表窗口
+        // creatEditWindow()
         editClassSchedule.show()
 
         // 编辑课程表
@@ -475,8 +497,6 @@ app.on('ready', () => {
             fs.writeFileSync(filePath, jsonData)
             classSchedule.webContents.send('changedClassSchedule', data)
             editClassSchedule.webContents.send('changedClassSchedule', data)
-            // editClassSchedule.webContents.send('changedClassScheduleToEdi')
-            // console.log(jsonData)
         })
 
     })
@@ -484,7 +504,7 @@ app.on('ready', () => {
     ipcMain.handle('meaning', async (event) => {
         const rawData = fs.readFileSync(filePath)
         const meaning = JSON.parse(rawData).wordMeaning
-        return meaning // 将数据返回给渲染进程
+        return meaning 
     })
 
     ipcMain.on('editTimeTable', (event, data) => {
@@ -507,9 +527,7 @@ app.on('ready', () => {
     });
 
     process.on('unhandledRejection', (reason, promise) => {
-        // 处理未处理的Promise拒绝
         console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-        // 阻止默认的未处理拒绝弹窗（如果有的话）
     });
 
     // 监听渲染进程的崩溃事件
@@ -517,18 +535,18 @@ app.on('ready', () => {
         console.error('Renderer process crashed', killed)
     })
 
-    const trayIconPath = path.join(__dirname, 'favicon.ico');
+    const trayIconPath = path.join(__dirname, 'favicon.ico')
     const tray = new Tray(trayIconPath);
     tray.setToolTip('智慧白板助手')
     const contextMenu = Menu.buildFromTemplate([
         { label: '显示主界面', click: () => { index.show() } },
-        { label: '退出', click: () => { app.quit(); } },
+        { label: '退出', click: () => { app.quit() } },
     ])
     tray.setContextMenu(contextMenu)
 })
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
-        app.quit();
+        app.quit()
     }
 });
