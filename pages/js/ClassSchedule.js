@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         let classSchedule = data.classSchedule
         let timeTable = data.timeTable
         console.log('Fetched data:', data)
-        // console.log(classSchedule)
         targetDate = new Date(data.countDownDays)
 
         // 倒数日修改后热更新
@@ -29,10 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // 计算倒数日
         function getCountDays() {
             let currentDate = new Date()
-            // console.log(targetDate)
-            // console.log(currentDate)
             let dateDistance = targetDate - currentDate
-            // console.log(dateDistance)
             let dateDistanceDays = Math.floor(dateDistance / (1000 * 60 * 60 * 24))
             document.getElementById('countDownTimer').innerHTML = String(dateDistanceDays)
         }
@@ -40,14 +36,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         // 获取当天的课程表
         function getScheduleForToday() {
             const now = new Date()
-            const dayOfWeek = now.getDay() // 0 是星期日，1 是星期一，...，6 是星期六
-            return classSchedule[dayOfWeek] // 根据星期几返回对应的课表
+            const dayOfWeek = now.getDay()
+            return classSchedule[dayOfWeek]
         }
 
         // 获取下一节课的信息
         function getNextClassInfo() {
-            const schedule = getScheduleForToday() // 获取今天的课表
-            // console.log(schedule)
+            const schedule = getScheduleForToday()
             const now = new Date()
             const currentHour = now.getHours()
             const currentMinute = now.getMinutes()
@@ -60,7 +55,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             for (let i = 0; i < schedule.length; i++) {
-                const classInfo = schedule[i]
                 const [startHour, startMinute] = timeTable[i].start.split(':').map(Number)
                 const [endHour, endMinute] = timeTable[i].end.split(':').map(Number)
                 const startTimeInSeconds = startHour * 3600 + startMinute * 60
@@ -70,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (currentTimeInSeconds >= startTimeInSeconds && currentTimeInSeconds < endTimeInSeconds) {
                     document.getElementById('container').style.visibility = 'hidden'
                     return { isClassTime: true, courseIndex: i }
-                    // 如果不是，就给下一节课添加动画
+                // 如果不是，就给下一节课添加动画
                 } else if (currentTimeInSeconds < startTimeInSeconds && startTimeInSeconds < nextClassTimeInSeconds) {
                     nextClassIndex = i
                     console.log(`class${i}`)

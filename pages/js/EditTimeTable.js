@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const endInput = document.getElementById('end')
     const editButton = document.getElementById('btn')
     const index = [0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    const indexRegx = /\b([1-9]|10|11)\b/
     const timeRegex = /^([01]?[0-9]|2[0-3]):([0-5]?[0-9])$/
 
     function showTimeTable() {
@@ -23,8 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     })
 
     editButton.addEventListener('click', () => {
-        alert(timeRegex.test(startInput.value))
-        if (timeRegex.test(startInput.value) && timeRegex.test(endInput.value)) {
+        if (timeRegex.test(startInput.value) && timeRegex.test(endInput.value) && indexRegx.test(indexInput.value)) {
             let formatedIndex = index[Number(indexInput.value)]
             timeTable[formatedIndex].start = startInput.value
             timeTable[formatedIndex].end = endInput.value

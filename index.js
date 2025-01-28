@@ -39,8 +39,8 @@ function writeDefalutData() {
 const wordList = fs.readFileSync(wordListPath)
 const wordListObj = JSON.parse(wordList)
 
-const rawData = fs.readFileSync(filePath)
-const jsonData = JSON.parse(rawData)
+let rawData = fs.readFileSync(filePath)
+let jsonData = JSON.parse(rawData)
 
 // 修改倒数日
 function updateCountDownDays(event, data) {
@@ -120,8 +120,8 @@ function translate() {
     // 有道翻译API的请求URL
     const apiUrl = `https://openapi.youdao.com/api?${queryString}`
 
-    const rawData = fs.readFileSync(filePath).toString()
-    const objData = JSON.parse(rawData)
+    let rawData = fs.readFileSync(filePath).toString()
+    let objData = JSON.parse(rawData)
 
     // 判断是否需要更新翻译
     if (new Date().toISOString().substring(0, 10) != objData.wordLastUpdate) {
