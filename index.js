@@ -6,7 +6,6 @@ const https = require('https')
 const axios = require('axios')
 const querystring = require('querystring')
 const crypto = require('crypto')
-const { REPL_MODE_SLOPPY } = require('repl')
 
 // 获取用户数据目录的路径
 const userFile = app.getPath('userData')
@@ -35,6 +34,8 @@ function writeDefalutData() {
         fs.writeFileSync(wordListPath, wordList)
     }
 }
+
+writeDefalutData()
 
 const wordList = fs.readFileSync(wordListPath)
 const wordListObj = JSON.parse(wordList)
@@ -390,9 +391,6 @@ app.on('ready', () => {
 
     // 创建问AI窗口
     createAiWindow()
-
-    // 写入默认数据文件
-    writeDefalutData()
 
     index.on('close', (event) => {
         // 阻止窗口默认的关闭行为
