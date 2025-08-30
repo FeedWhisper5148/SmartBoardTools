@@ -28,9 +28,20 @@ body {
 /* 导航栏 */
 .nav {
     height: 40px;
-    background-color: #5FB878;
-    text-align: center;
     line-height: 40px;
+    background-color: #5FB878;
+    display: flex;
+    /* 启用Flex布局 */
+    width: 100%;
+    /* 容器宽度 */
+}
+
+.part {
+    flex: 1;
+    /* 关键：每个子元素平均分配宽度 */
+    border: 2px solid white;
+    /* 可选：边框便于观察 */
+    text-align: center;
 }
 
 .settings {

@@ -78,5 +78,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
     hideWindow: (window) => {
         ipcRenderer.send(`hide${window}Window`)
-    }
+    },
+
+    // 置顶或取消置顶窗口
+    pinWindow: (window) => {
+        ipcRenderer.send(`pin${window}Window`)
+    },
+    cancelPinWindow: (window) => {
+        ipcRenderer.send(`cancelPin${window}Window`)
+    },
 })

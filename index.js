@@ -478,6 +478,22 @@ app.on('ready', () => {
         index.show()
     })
 
+    ipcMain.on('pinClassScheduleWindow', () => {
+        classSchedule.setAlwaysOnTop(true)
+    })
+
+    ipcMain.on('cancelPinClassScheduleWindow', () => {
+        classSchedule.setAlwaysOnTop(false)
+    })
+
+    ipcMain.on('pinMemoriseWindow', () => {
+        memoriseWords.setAlwaysOnTop(true)
+    })
+
+    ipcMain.on('cancelPinMemoriseWindow', () => {       
+        memoriseWords.setAlwaysOnTop(false)
+    })
+    
     // 退出按钮
     ipcMain.on('quitApp', () => {
         app.exit();
