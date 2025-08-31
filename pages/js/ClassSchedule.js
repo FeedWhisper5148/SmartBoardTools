@@ -25,6 +25,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             classSchedule = data.classSchedule
         })
 
+        // 更改课程表缩放比例
+        electronAPI.receive('changeClassScheduleScale', (data) => {
+            document.body.style.transform = `scale(${data})`
+        })
+
         // 计算倒数日
         function getCountDays() {
             let currentDate = new Date()

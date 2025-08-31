@@ -71,7 +71,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     editTimeTable: (data) => {
         ipcRenderer.send('editTimeTable', data)
     },
-
+    changeClassScheduleScale: (scale) => {
+        ipcRenderer.send('changeClassScheduleScale', scale)
+    },
     // 显示或隐藏窗口
     showWindow: (window) => {
         ipcRenderer.send(`show${window}Window`)

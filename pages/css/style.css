@@ -8,6 +8,7 @@
 }
 body {
     /* background-color: grey; */
+    transform-origin: top;
     width: 1239px;
     height: 720px;
     overflow: hidden;

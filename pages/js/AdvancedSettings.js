@@ -1,5 +1,7 @@
 const classSchedulePinSwitch = document.getElementById('classSchedulePinSwitch')
 const memorisePinSwitch = document.getElementById('memorisePinSwitch')
+const classScheduleScaleInput = document.getElementById('classScheduleScaleInput')
+const classScheduleScaleBtn = document.getElementById('classScheduleScaleBtn')
 
 layui.use(function () {
     var form = layui.form
@@ -21,4 +23,9 @@ layui.use(function () {
             electronAPI.cancelPinWindow('Memorise')
         }
     })
+})
+
+classScheduleScaleBtn.addEventListener('click', () => {
+    let scale = classScheduleScaleInput.value
+    electronAPI.changeClassScheduleScale(scale)
 })

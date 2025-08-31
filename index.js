@@ -493,6 +493,10 @@ app.on('ready', () => {
     ipcMain.on('cancelPinMemoriseWindow', () => {       
         memoriseWords.setAlwaysOnTop(false)
     })
+
+    ipcMain.on('changeClassScheduleScale', (event, data) => {
+        classSchedule.webContents.send('changeClassScheduleScale', data)
+    })
     
     // 退出按钮
     ipcMain.on('quitApp', () => {
